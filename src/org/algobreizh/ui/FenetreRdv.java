@@ -5,6 +5,7 @@ import javax.swing.*;
 public class FenetreRdv extends JFrame {
 	
 	
+	private static final long serialVersionUID = 6536480305206836568L;
 	private static JLabel labellieurdv;
 	private static JLabel labeldaterdv;
 	private static JLabel labelcontactrdv;

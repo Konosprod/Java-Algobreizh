@@ -1,8 +1,6 @@
 package org.algobreizh.ui;
 
-import java.awt.Color;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -11,6 +9,8 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 public class FenetreFicheClient extends JFrame {
+	
+	private static final long serialVersionUID = 491780379919375191L;
 	
 	private JTextField nomClient;
 	private JTextField prenomClient;
