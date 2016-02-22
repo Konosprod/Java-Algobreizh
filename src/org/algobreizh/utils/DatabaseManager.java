@@ -34,7 +34,7 @@ public class DatabaseManager {
 	 * Récupère l'instance du DatabaseManager
 	 * @return L'instance du DatabaseManager
 	 */
-	public static DatabaseManager gestInstance()
+	public static DatabaseManager getInstance()
 	{
 		if(instance == null)
 			instance =new DatabaseManager();
