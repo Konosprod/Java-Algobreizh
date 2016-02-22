@@ -1,4 +1,4 @@
-package org.algobreizh.ui;
+package org.algobreizh.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import org.algobreizh.ui.FenetrePrincipale;
 
 public class ActionConnect implements ActionListener {
 
