@@ -1,6 +1,10 @@
 package org.algobreizh.ui;
 
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.util.Vector;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -8,6 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SpringLayout;
+import javax.swing.table.DefaultTableModel;
+
+import org.algobreizh.utils.DatabaseManager;
 
 public class FenetrePrincipale extends JFrame {
 	
@@ -59,7 +66,6 @@ public class FenetrePrincipale extends JFrame {
 		layout.putConstraint(SpringLayout.WEST, numeroCommercial, 10, SpringLayout.EAST, emailCommercial);
 		
 		//Tableau client
-		tabClient = new JTable(new String[][]{{"Test", "test", "test"},{"Test1", "test2", "test3"}}, new String[] {"H1", "H2", "H3"});
 		tabClient.setFillsViewportHeight(true);
 		JScrollPane scrollPan = new JScrollPane(tabClient);
 		mainPane.add(scrollPan);
@@ -95,9 +101,48 @@ public class FenetrePrincipale extends JFrame {
 		
 		mainPane.setLayout(layout);
 		
+		fillTabClient();
+		
 		setContentPane(mainPane);
 		setSize(800, 600);
 		setResizable(false);
+	}
+	
+	private void fillTabClient()
+	{
+		DatabaseManager db = DatabaseManager.getInstance();
+		Vector<String> columnNames = new Vector<String>();
+		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+		String sql = "select nomClient, prenomClient, numeroClient, emailClient, dateRdv, dateDernierRdv, idClient from client where `idZoneGeo` = 9";
+		
+		try {
+			ResultSet res = db.execute(sql);
+			
+			ResultSetMetaData metaData = res.getMetaData();
+			int columnCount = metaData.getColumnCount();
+			
+			for(int i = 1; i <= columnCount; i++)
+			{
+				columnNames.add(metaData.getColumnName(i));
+			}
+			
+			while(res.next())
+			{
+				Vector<Object> vector = new Vector<Object>();
+				
+				for(int i = 1; i <= columnCount; i++)
+				{
+					vector.add(res.getObject(i));
+				}
+				
+				data.add(vector);
+			}
+			
+			
+			tabClient.setModel(new DefaultTableModel(data, columnNames));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
