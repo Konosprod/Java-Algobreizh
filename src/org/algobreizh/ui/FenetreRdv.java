@@ -62,12 +62,6 @@ public class FenetreRdv extends JFrame {
 		layout.putConstraint(SpringLayout.NORTH, contactrdv, 10, SpringLayout.SOUTH, daterdv);
 		layout.putConstraint(SpringLayout.WEST, contactrdv, 8, SpringLayout.EAST, labelcontactrdv);
 		
-		
-		
-		
-		
 		this.setContentPane(panel);
-		this.setEnabled(true);
-		this.setVisible(true);
 	}
 }
