@@ -2,7 +2,7 @@ package org.algobreizh.metier;
 import java.util.*;
 public class Commercial {
 	private  int idCommercial;	
-	private  ArrayList<Client> clients;
+	private  ArrayList client;
 	private String email;
 	private String nom;
 	private String prenom;	
@@ -15,8 +15,6 @@ public class Commercial {
 		this.setNom(nom) ;
 		this.setPrenom(prenom);
 		this.setEmail(email);
-		
-		clients = new ArrayList<Client>();
 	}
 
 	/**
@@ -27,7 +25,8 @@ public class Commercial {
 	}
 
 	/**
-	 * @param idCommercial
+	 * modifie l'idcommercial
+	 * @param identifiant du commercial
 	 */
 	public void setIdCommercial(int idCommercial) {
 		this.idCommercial = idCommercial;
