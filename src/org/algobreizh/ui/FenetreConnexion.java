@@ -11,6 +11,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import org.algobreizh.ui.actions.ActionConnect;
+
 public class FenetreConnexion extends JFrame {
 	
 	private static final long serialVersionUID = -1205943752438446635L;
