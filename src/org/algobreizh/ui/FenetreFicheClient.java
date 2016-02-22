@@ -27,6 +27,7 @@ public class FenetreFicheClient extends JFrame {
 	private JLabel labelProchainRDVClient;
 	private JLabel labelDernierRDVClient;
 	private JButton valider;
+	private boolean nouveau = false;
 	
 	public FenetreFicheClient() {
 		
