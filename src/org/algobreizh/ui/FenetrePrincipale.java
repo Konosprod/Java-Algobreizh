@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,8 +13,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SpringLayout;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
+import org.algobreizh.ui.actions.AjoutHandler;
 import org.algobreizh.ui.actions.EditHandler;
 import org.algobreizh.ui.actions.RdvHandler;
 import org.algobreizh.utils.DatabaseManager;
@@ -40,16 +47,20 @@ public class FenetrePrincipale extends JFrame {
 		layout = new SpringLayout();
 		nomCommercial = new JLabel("Nom : Rambo");
 		emailCommercial = new JLabel("Email : john.rambo@algobreizh.fr");
-		prenomCommercial = new JLabel("Nom : John");
-		numeroCommercial = new JLabel("Numero : 0649784545");
+		prenomCommercial = new JLabel("Prénom : John");
+		numeroCommercial = new JLabel("Téléphone : 0649784545");
 		tabClient = new JTable();
 		buttonEdit = new JButton("Editer");
 		buttonRdv = new JButton("RDV");
 		buttonAjout = new JButton("Ajout");
 		buttonSuppr = new JButton("Suppr");
 		
+		buttonRdv.setEnabled(false);
+		buttonSuppr.setEnabled(false);
+		buttonEdit.setEnabled(false);
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ImageIcon icon = new ImageIcon("ressources/icon.png");
+		this.setIconImage(icon.getImage());
 		
 		//Nom Prenom commercial
 		mainPane.add(nomCommercial);
@@ -110,6 +121,8 @@ public class FenetrePrincipale extends JFrame {
 		setContentPane(mainPane);
 		setSize(800, 600);
 		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Algobreizh - Prise de rendez-vous");
 	}
 	
 	private void fillTabClient()
@@ -142,16 +155,54 @@ public class FenetrePrincipale extends JFrame {
 				data.add(vector);
 			}
 			
+			TableModel model = new DefaultTableModel(data, columnNames) {
+				
+				//Desactive l'édition de la cellule au double click
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
 			
-			tabClient.setModel(new DefaultTableModel(data, columnNames));
+			setupSelectionModel();
+			
+			tabClient.setModel(model);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void connectButtons()
+	private void connectButtons() 
 	{
 		buttonRdv.addActionListener(new RdvHandler(this));
 		buttonEdit.addActionListener(new EditHandler(this));
+		buttonAjout.addActionListener(new AjoutHandler(this));
+	}
+	
+	private void setupSelectionModel()
+	{
+		tabClient.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if(tabClient.getSelectedRow() != -1)
+				{
+					buttonEdit.setEnabled(true);
+					//buttonSuppr.setEnabled(true);
+					buttonRdv.setEnabled(true);
+				}
+				else
+				{
+					buttonEdit.setEnabled(false);
+					//buttonSuppr.setEnabled(false);
+					buttonRdv.setEnabled(false);
+				}
+			}
+		});
+	}
+	
+	public int getSelectedIndex()
+	{
+		return (int) tabClient.getValueAt(tabClient.getSelectedRow(), 6);
 	}
 }
