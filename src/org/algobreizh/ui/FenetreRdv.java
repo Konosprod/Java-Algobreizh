@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,7 +19,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 
-public class FenetreRdv extends JFrame {
+public class FenetreRdv extends JDialog {
     
 	private static final long serialVersionUID = 6536480305206836568L;
 	
@@ -34,7 +35,6 @@ public class FenetreRdv extends JFrame {
         this.setTitle("Fiche de prise de Rendez-vous");
         //Redimensionne la fenetre
         this.setSize(400, 200);
-        this.setLocationRelativeTo(null);
         
         //affecte des valeurs au Panel ainsi qu'au JTextField et le boutton
         labellieurdv= new JLabel("Lieu du rendez vous : ");
@@ -90,6 +90,5 @@ public class FenetreRdv extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, bouttonValide, 10, SpringLayout.SOUTH, labelcontactrdv);
         
         this.setContentPane(panel);
-        this.setEnabled(true);
     }
 }
