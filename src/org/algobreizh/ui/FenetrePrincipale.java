@@ -14,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.SpringLayout;
 import javax.swing.table.DefaultTableModel;
 
+import org.algobreizh.ui.actions.RdvHandler;
 import org.algobreizh.utils.DatabaseManager;
 
 public class FenetrePrincipale extends JFrame {
@@ -36,10 +37,10 @@ public class FenetrePrincipale extends JFrame {
 		
 		mainPane = new JPanel();
 		layout = new SpringLayout();
-		nomCommercial = new JLabel("Rambo");
-		emailCommercial = new JLabel("john.rambo@algobreizh.fr");
-		prenomCommercial = new JLabel("John");
-		numeroCommercial = new JLabel("0649784545");
+		nomCommercial = new JLabel("Nom : Rambo");
+		emailCommercial = new JLabel("Email : john.rambo@algobreizh.fr");
+		prenomCommercial = new JLabel("Nom : John");
+		numeroCommercial = new JLabel("Numero : 0649784545");
 		tabClient = new JTable();
 		buttonEdit = new JButton("Editer");
 		buttonRdv = new JButton("RDV");
@@ -101,6 +102,8 @@ public class FenetrePrincipale extends JFrame {
 		
 		mainPane.setLayout(layout);
 		
+		connectButtons();
+		
 		fillTabClient();
 		
 		setContentPane(mainPane);
@@ -144,5 +147,9 @@ public class FenetrePrincipale extends JFrame {
 			e.printStackTrace();
 		}
 	}
-
+	
+	private void connectButtons()
+	{
+		buttonRdv.addActionListener(new RdvHandler(this));
+	}
 }
