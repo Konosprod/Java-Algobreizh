@@ -34,6 +34,8 @@ public class EditHandler implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		int index = parent.getSelectedIndex();	
+		fenetreEdit.chargerClient(index);
 		fenetreEdit.setVisible(true);
 	}
 	
