@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 22 Février 2016 à 16:18
+-- Généré le :  Mer 24 Février 2016 à 10:01
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -88,11 +88,18 @@ INSERT INTO `commercial` (`idCommercial`, `idZoneGeo`, `emailCommercial`, `numer
 
 CREATE TABLE IF NOT EXISTS `connexion` (
   `idConnexion` int(11) NOT NULL AUTO_INCREMENT,
-  `hash` int(11) NOT NULL,
+  `hash` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   `idCommercial` int(11) NOT NULL,
   PRIMARY KEY (`idConnexion`),
   KEY `FK_ConnexionCommercial` (`idCommercial`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Contenu de la table `connexion`
+--
+
+INSERT INTO `connexion` (`idConnexion`, `hash`, `idCommercial`) VALUES
+(1, '8b7df143d91c716ecfa5fc1730022f6b421b05cedee8fd52b1fc65a96030ad52', 1);
 
 -- --------------------------------------------------------
 
