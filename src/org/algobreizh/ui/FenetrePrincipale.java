@@ -14,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.SpringLayout;
 import javax.swing.table.DefaultTableModel;
 
+import org.algobreizh.ui.actions.EditHandler;
 import org.algobreizh.ui.actions.RdvHandler;
 import org.algobreizh.utils.DatabaseManager;
 
@@ -151,5 +152,6 @@ public class FenetrePrincipale extends JFrame {
 	private void connectButtons()
 	{
 		buttonRdv.addActionListener(new RdvHandler(this));
+		buttonEdit.addActionListener(new EditHandler(this));
 	}
 }
