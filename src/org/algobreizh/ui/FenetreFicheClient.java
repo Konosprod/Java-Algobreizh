@@ -1,12 +1,16 @@
 package org.algobreizh.ui;
 
 
+import java.sql.ResultSet;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+
+import org.algobreizh.utils.DatabaseManager;
 
 public class FenetreFicheClient extends JDialog {
 	
@@ -16,7 +20,9 @@ public class FenetreFicheClient extends JDialog {
 	private JTextField prenomClient;
 	private JTextField emailClient;
 	private JTextField particularite;
-	private JTextField prochainRDVClient;
+	private JTextField telephoneClient;
+	private JLabel labelTelephoneClient;
+	private JLabel prochainRDVClient;
 	private JLabel labelParticularite;
 	private JLabel labelNomClient;
 	private JLabel labelPrenomClient;
@@ -27,34 +33,53 @@ public class FenetreFicheClient extends JDialog {
 	private JLabel labelProchainRDVClient;
 	private JLabel labelDernierRDVClient;
 	private JButton valider;
-	private boolean nouveau = false;
+	private boolean etat = true;
 	
 	public FenetreFicheClient() {
 		
 	
 	this.setTitle("Fiche Client");
-    this.setSize(500, 350);
+    this.setSize(500, 400);
  
     // Création des JLabel
     labelNomClient = new JLabel("Nom : ");
     labelPrenomClient = new JLabel("Prénom : ");
     labelEmailClient = new JLabel("Email : ");
+    labelTelephoneClient = new JLabel("Téléphone : ");
     labelCodeClient = new JLabel("Code Client : ");
     codeClient = new JLabel("000761");
     labelParticularite = new JLabel("Particularite : ");
     labelDernierRDVClient = new JLabel("Dernier rendez-vous : ");
     labelProchainRDVClient = new JLabel("Prochain rendez-vous : ");
     dernierRDVClient = new JLabel("Mercredi 18 Octobre 2015");
+    prochainRDVClient = new JLabel("Mercredi 18 Octobre 2015");
     
     // Création des JtextField
+    
     nomClient = new JTextField(20);
-    nomClient.setText("José");
     prenomClient = new JTextField(20);
-    prenomClient.setText("Martinez");
     emailClient = new JTextField(20);
-    emailClient.setText("Jose.martinez@gmail.com");
-    particularite = new JTextField("Le client est en retard sur ses factures n° 45620 et 45872");
-    prochainRDVClient = new JTextField("Jeudi 6 Mars 2016");
+    particularite = new JTextField(30);
+    telephoneClient = new JTextField(8);
+    
+    if (etat == true)
+    {
+    	nomClient.setEditable(true);
+    	prenomClient.setEditable(true);
+    	emailClient.setEditable(true);
+    	particularite.setEditable(true);
+    	
+    }
+    else
+    {
+    	nomClient.setEditable(false);
+    	prenomClient.setEditable(false);
+    	emailClient.setEditable(false);
+    	particularite.setEditable(false);
+    	
+    	
+    	
+    }
     
     valider = new JButton("Valider");
     
@@ -91,6 +116,14 @@ public class FenetreFicheClient extends JDialog {
     layout.putConstraint(SpringLayout.NORTH, emailClient, 30, SpringLayout.NORTH, prenomClient);
     layout.putConstraint(SpringLayout.WEST, emailClient, 34, SpringLayout.EAST, labelEmailClient);
     
+ // Telephone du client
+    pan.add(labelTelephoneClient);
+    pan.add(telephoneClient);
+    layout.putConstraint(SpringLayout.WEST, labelTelephoneClient, 10, SpringLayout.WEST, pan);
+    layout.putConstraint(SpringLayout.NORTH, labelTelephoneClient, 30, SpringLayout.NORTH, labelEmailClient);
+    layout.putConstraint(SpringLayout.NORTH, telephoneClient, 30, SpringLayout.NORTH, emailClient);
+    layout.putConstraint(SpringLayout.WEST, telephoneClient, 0, SpringLayout.WEST, emailClient);
+    
     // Code du client
     pan.add(labelCodeClient);
     pan.add(codeClient);
@@ -103,9 +136,9 @@ public class FenetreFicheClient extends JDialog {
     pan.add(labelParticularite);
     pan.add(particularite);
     layout.putConstraint(SpringLayout.WEST, labelParticularite, 10, SpringLayout.WEST, pan);
-    layout.putConstraint(SpringLayout.NORTH, labelParticularite, 60, SpringLayout.NORTH, labelEmailClient);
-    layout.putConstraint(SpringLayout.NORTH, particularite, 60, SpringLayout.NORTH, emailClient);
-    layout.putConstraint(SpringLayout.WEST, particularite, 34, SpringLayout.EAST, labelParticularite);
+    layout.putConstraint(SpringLayout.NORTH, labelParticularite, 60, SpringLayout.NORTH, labelTelephoneClient);
+    layout.putConstraint(SpringLayout.NORTH, particularite, 60, SpringLayout.NORTH, telephoneClient);
+    layout.putConstraint(SpringLayout.WEST, particularite, 34, SpringLayout.EAST, labelTelephoneClient);
     
     // Dernier Rendez-vous et prochain Rendez-vous
     pan.add(labelDernierRDVClient);
@@ -119,7 +152,7 @@ public class FenetreFicheClient extends JDialog {
     layout.putConstraint(SpringLayout.WEST, labelProchainRDVClient, 10, SpringLayout.WEST, pan);
     layout.putConstraint(SpringLayout.NORTH, labelProchainRDVClient, 30, SpringLayout.NORTH, labelDernierRDVClient);
     layout.putConstraint(SpringLayout.NORTH, prochainRDVClient, 30, SpringLayout.NORTH, dernierRDVClient);
-    layout.putConstraint(SpringLayout.WEST, prochainRDVClient, 34, SpringLayout.EAST, labelProchainRDVClient);
+    layout.putConstraint(SpringLayout.WEST, prochainRDVClient, 25, SpringLayout.EAST, labelProchainRDVClient);
     
     
     // bouton valider
@@ -130,9 +163,50 @@ public class FenetreFicheClient extends JDialog {
     
     //On prévient notre JFrame que notre JPanel sera son content pane
     pan.setLayout(layout);
-    this.setContentPane(pan);               
-	
-	
+    this.setContentPane(pan); 
+    chargerClient(6);
 	
 }
+	
+	public String getNomClient()
+	{
+		return nomClient.getText();
+	}
+	
+	public String getPrenomClient()
+	{
+		return prenomClient.getText();
+	}
+	
+	public String getEmailClient()
+	{
+		return emailClient.getText();
+	}
+	
+	public String getParticulariteClient()
+	{
+		return particularite.getText();
+	}
+	
+	public void chargerClient(long id)
+	{
+		DatabaseManager db = DatabaseManager.getInstance();
+		
+		try {
+			ResultSet res = db.execute("SELECT nomClient, prenomClient, emailClient, particulariteClient, numeroClient FROM client WHERE idClient = 6"/*+String.valueOf(id)*/);
+			res.next();
+			nomClient.setText(res.getString("nomClient"));
+			prenomClient.setText(res.getString("prenomClient"));
+			emailClient.setText(res.getString("emailClient"));
+			particularite.setText(res.getString("particulariteClient"));
+			codeClient.setText(String.format("%05d", id));
+			telephoneClient.setText(res.getString("numeroClient"));
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 }
