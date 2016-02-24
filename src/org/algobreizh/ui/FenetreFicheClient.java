@@ -2,13 +2,13 @@ package org.algobreizh.ui;
 
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
-public class FenetreFicheClient extends JFrame {
+public class FenetreFicheClient extends JDialog {
 	
 	private static final long serialVersionUID = 491780379919375191L;
 	
@@ -34,8 +34,6 @@ public class FenetreFicheClient extends JFrame {
 	
 	this.setTitle("Fiche Client");
     this.setSize(500, 350);
-    this.setLocationRelativeTo(null); 
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  
     // Création des JLabel
     labelNomClient = new JLabel("Nom : ");
@@ -133,7 +131,6 @@ public class FenetreFicheClient extends JFrame {
     //On prévient notre JFrame que notre JPanel sera son content pane
     pan.setLayout(layout);
     this.setContentPane(pan);               
-    this.setVisible(true);
 	
 	
 	
