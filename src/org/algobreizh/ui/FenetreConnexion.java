@@ -1,5 +1,12 @@
 package org.algobreizh.ui;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,7 +27,10 @@ public class FenetreConnexion extends JFrame {
 	private JButton button;
 	
 	public FenetreConnexion() {
-		super("Connexion");
+		super("Algobreizh - Connexion");
+		
+		ImageIcon icon = new ImageIcon("ressources/icon.png");
+		this.setIconImage(icon.getImage());
 		
 		pan = new JPanel();
 		button = new JButton("Connexion");

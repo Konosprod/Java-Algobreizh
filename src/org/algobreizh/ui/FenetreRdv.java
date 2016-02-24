@@ -3,6 +3,7 @@ package org.algobreizh.ui;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -32,9 +33,12 @@ public class FenetreRdv extends JDialog {
     public FenetreRdv(){
         //renomme la fenetre
     
-        this.setTitle("Fiche de prise de Rendez-vous");
+        this.setTitle("Algobreizh - Ajout rendez-vous");
         //Redimensionne la fenetre
         this.setSize(400, 200);
+        
+		ImageIcon icon = new ImageIcon("ressources/icon.png");
+		this.setIconImage(icon.getImage());
         
         //affecte des valeurs au Panel ainsi qu'au JTextField et le boutton
         labellieurdv= new JLabel("Lieu du rendez vous : ");

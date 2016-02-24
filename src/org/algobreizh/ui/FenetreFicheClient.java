@@ -3,6 +3,7 @@ package org.algobreizh.ui;
 
 import java.sql.ResultSet;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -38,8 +39,10 @@ public class FenetreFicheClient extends JDialog {
 	public FenetreFicheClient() {
 		
 	
-	this.setTitle("Fiche Client");
+	this.setTitle("Algobreizh - Fiche Client");
     this.setSize(500, 400);
+	ImageIcon icon = new ImageIcon("ressources/icon.png");
+	this.setIconImage(icon.getImage());
  
     // Création des JLabel
     labelNomClient = new JLabel("Nom : ");
@@ -164,8 +167,6 @@ public class FenetreFicheClient extends JDialog {
     //On prévient notre JFrame que notre JPanel sera son content pane
     pan.setLayout(layout);
     this.setContentPane(pan); 
-    chargerClient(6);
-	
 }
 	
 	public String getNomClient()
@@ -193,7 +194,7 @@ public class FenetreFicheClient extends JDialog {
 		DatabaseManager db = DatabaseManager.getInstance();
 		
 		try {
-			ResultSet res = db.execute("SELECT nomClient, prenomClient, emailClient, particulariteClient, numeroClient FROM client WHERE idClient = 6"/*+String.valueOf(id)*/);
+			ResultSet res = db.execute("SELECT nomClient, prenomClient, emailClient, particulariteClient, numeroClient FROM client WHERE idClient = " + String.valueOf(id));
 			res.next();
 			nomClient.setText(res.getString("nomClient"));
 			prenomClient.setText(res.getString("prenomClient"));
