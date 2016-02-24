@@ -71,8 +71,6 @@ public class FenetreRdv extends JFrame {
         panel.add(labelcontactrdv);
         panel.add(contactrdv);
         
-        panel.add(timeSpinner);
-        
         layout.putConstraint(SpringLayout.WEST, labellieurdv, 11, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.NORTH, labellieurdv, 10, SpringLayout.NORTH, panel);
         layout.putConstraint(SpringLayout.NORTH, lieurdv, 10, SpringLayout.NORTH, panel);
