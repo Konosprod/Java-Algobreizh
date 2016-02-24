@@ -56,6 +56,7 @@ public class FenetreConnexion extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(300, 200);
 		this.setResizable(false);
+		this.setLocationRelativeTo(null);
 		
 		button.addActionListener(new ActionConnect(this,passEntry, idEntry));
 	}

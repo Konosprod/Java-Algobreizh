@@ -24,6 +24,7 @@ public class ActionConnect implements ActionListener {
 	{
 		parent.setVisible(false);
 		nextFrame = new FenetrePrincipale();
+		nextFrame.setLocationRelativeTo(parent);
 		nextFrame.setVisible(true);
 	}
 
