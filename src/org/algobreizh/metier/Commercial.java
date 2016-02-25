@@ -2,7 +2,7 @@ package org.algobreizh.metier;
 import java.util.*;
 public class Commercial {
 	private  int idCommercial;	
-	private  ArrayList client;
+	private  ArrayList<Client> client;
 	private String email;
 	private String nom;
 	private String prenom;	
