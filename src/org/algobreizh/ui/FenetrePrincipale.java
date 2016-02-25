@@ -15,8 +15,6 @@ import javax.swing.JTable;
 import javax.swing.SpringLayout;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -47,8 +45,8 @@ public class FenetrePrincipale extends JFrame {
 		layout = new SpringLayout();
 		nomCommercial = new JLabel("Nom : Rambo");
 		emailCommercial = new JLabel("Email : john.rambo@algobreizh.fr");
-		prenomCommercial = new JLabel("Prénom : John");
-		numeroCommercial = new JLabel("Téléphone : 0649784545");
+		prenomCommercial = new JLabel("Prï¿½nom : John");
+		numeroCommercial = new JLabel("Tï¿½lï¿½phone : 0649784545");
 		tabClient = new JTable();
 		buttonEdit = new JButton("Editer");
 		buttonRdv = new JButton("RDV");
@@ -156,8 +154,10 @@ public class FenetrePrincipale extends JFrame {
 			}
 			
 			TableModel model = new DefaultTableModel(data, columnNames) {
-				
-				//Desactive l'édition de la cellule au double click
+
+			    private static final long serialVersionUID = 965018577721069100L;
+
+				//Desactive l'Ã©dition de la cellule au double click
 				@Override
 				public boolean isCellEditable(int row, int column) {
 					return false;
@@ -204,5 +204,10 @@ public class FenetrePrincipale extends JFrame {
 	public int getSelectedIndex()
 	{
 		return (int) tabClient.getValueAt(tabClient.getSelectedRow(), 6);
+	}
+	
+	public void refreshTab()
+	{
+	    fillTabClient();
 	}
 }

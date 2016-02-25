@@ -1,17 +1,13 @@
 package org.algobreizh.ui;
 
-import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.SpinnerDateModel;
 import javax.swing.SpringLayout;
 
 import org.algobreizh.utils.DateLabelFormatter;
@@ -43,7 +39,7 @@ public class FenetreRdv extends JDialog {
         //affecte des valeurs au Panel ainsi qu'au JTextField et le boutton
         labellieurdv= new JLabel("Lieu du rendez vous : ");
         labeldaterdv = new JLabel("Date du rendez vous : ");
-        labelcontactrdv = new JLabel("Personne à contacter : ");
+        labelcontactrdv = new JLabel("Personne ï¿½ contacter : ");
         bouttonValide = new JButton("Valider");
         contactrdv= new JTextField (20);
         lieurdv = new JTextField(20);
@@ -51,7 +47,7 @@ public class FenetreRdv extends JDialog {
         //Instanciation d'un objet JPanel
         JPanel panel = new JPanel();
         SpringLayout layout = new SpringLayout();
-        panel.setLayout(layout);//permet de découper le panel en plusieur partie
+        panel.setLayout(layout);//permet de dï¿½couper le panel en plusieur partie
         
         UtilDateModel model = new UtilDateModel();
         JDatePanelImpl datePanel = new JDatePanelImpl(model, new Properties());
@@ -66,7 +62,7 @@ public class FenetreRdv extends JDialog {
         timeSpinner.setValue(new Date()); // will only show the current time
         */
         
-        //Ajoute Les éléments lablleieurdv et lieurdv dans le Frame
+        //Ajoute Les ï¿½lï¿½ments lablleieurdv et lieurdv dans le Frame
         panel.add(bouttonValide);
         panel.add(labellieurdv);
         panel.add(lieurdv);
