@@ -11,7 +11,7 @@ import java.sql.Statement;
 /**
  * @author Alex
  * 
- * Classe servant d'interface à la base de données
+ * Classe servant d'interface ï¿½ la base de donnï¿½es
  *
  */
 public class DatabaseManager {
@@ -31,7 +31,7 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * Récupère l'instance du DatabaseManager
+	 * Rï¿½cupï¿½re l'instance du DatabaseManager
 	 * @return L'instance du DatabaseManager
 	 */
 	public static DatabaseManager getInstance()
@@ -43,7 +43,7 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * Connect à la base de donnée
+	 * Connect ï¿½ la base de donnï¿½e
 	 */
 	private void connect()
 	{ 
@@ -75,17 +75,28 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * Execute une requête sur la base de données
-	 * @param request La requête SQL à exécuter
-	 * @return Le résultat de la requête
+	 * Execute une requï¿½te sur la base de donnï¿½es
+	 * @param request La requï¿½te SQL ï¿½ exï¿½cuter
+	 * @return Le rï¿½sultat de la requï¿½te
 	 * @throws Exception
 	 */
 	public ResultSet execute(String request) throws Exception
 	{
 		Statement stmt = connection.createStatement();
 		
+		stmt.closeOnCompletion();
+		
 		ResultSet res = stmt.executeQuery(request);
 		
 		return res;
+	}
+	
+	public void executeUpdate(String request) throws Exception
+	{
+	    Statement stmt = connection.createStatement();
+	    
+	    stmt.closeOnCompletion();
+	    
+	    stmt.executeUpdate(request);
 	}
 }
