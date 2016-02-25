@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JFrame;
-
 import org.algobreizh.ui.FenetreFicheClient;
 import org.algobreizh.ui.FenetrePrincipale;
 
