@@ -84,8 +84,6 @@ public class DatabaseManager {
 	{
 		Statement stmt = connection.createStatement();
 		
-		stmt.closeOnCompletion();
-		
 		ResultSet res = stmt.executeQuery(request);
 		
 		return res;
@@ -94,8 +92,6 @@ public class DatabaseManager {
 	public void executeUpdate(String request) throws Exception
 	{
 	    Statement stmt = connection.createStatement();
-	    
-	    stmt.closeOnCompletion();
 	    
 	    stmt.executeUpdate(request);
 	}
