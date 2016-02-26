@@ -44,12 +44,13 @@ public class AjoutHandler implements ActionListener {
 	    String prenom = fenetreAjout.getPrenomClient();
 	    String particularite = fenetreAjout.getParticulariteClient();
 	    String email = fenetreAjout.getEmailClient();
+	    String numero = fenetreAjout.getTelephoneClient();
 	    
 	    String sql = "insert into `client` (`dateRdv`, "
 	    + "`dateDernierRdv`, `idzoneGeo`, `nomClient`, `prenomClient`,"
 	    + " `particulariteClient`, `emailClient`, `numeroClient`)"
 	    + "values(0,0,9,'"+ nom +"','"+ prenom + "','"
-	    + particularite+ "','" + email +"', \"\")";
+	    + particularite+ "','" + email +"','"+numero+"')";
 	    
 	    try
 	    {
