@@ -44,11 +44,11 @@ public class FenetreFicheClient extends JDialog {
 	ImageIcon icon = new ImageIcon("ressources/icon.png");
 	this.setIconImage(icon.getImage());
  
-    // Création des JLabel
+    // Crï¿½ation des JLabel
     labelNomClient = new JLabel("Nom : ");
-    labelPrenomClient = new JLabel("Prénom : ");
+    labelPrenomClient = new JLabel("Prï¿½nom : ");
     labelEmailClient = new JLabel("Email : ");
-    labelTelephoneClient = new JLabel("Téléphone : ");
+    labelTelephoneClient = new JLabel("Tï¿½lï¿½phone : ");
     labelCodeClient = new JLabel("Code Client : ");
     codeClient = new JLabel("000761");
     labelParticularite = new JLabel("Particularite : ");
@@ -57,7 +57,7 @@ public class FenetreFicheClient extends JDialog {
     dernierRDVClient = new JLabel("Mercredi 18 Octobre 2015");
     prochainRDVClient = new JLabel("Mercredi 18 Octobre 2015");
     
-    // Création des JtextField
+    // Crï¿½ation des JtextField
     
     nomClient = new JTextField(20);
     prenomClient = new JTextField(20);
@@ -164,7 +164,7 @@ public class FenetreFicheClient extends JDialog {
     layout.putConstraint(SpringLayout.NORTH, valider, 60, SpringLayout.NORTH, prochainRDVClient);
     
     
-    //On prévient notre JFrame que notre JPanel sera son content pane
+    //On prï¿½vient notre JFrame que notre JPanel sera son content pane
     pan.setLayout(layout);
     this.setContentPane(pan); 
 }
@@ -187,6 +187,16 @@ public class FenetreFicheClient extends JDialog {
 	public String getParticulariteClient()
 	{
 		return particularite.getText();
+	}
+	
+	public String getIdClient()
+	{
+	    return codeClient.getText();
+	}
+	
+	public String getTelephoneClient()
+	{
+	    return telephoneClient.getText();
 	}
 	
 	public void chargerClient(long id)
