@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 
 import org.algobreizh.ui.FenetreFicheClient;
 import org.algobreizh.ui.FenetrePrincipale;
+import org.algobreizh.utils.DatabaseManager;
 
 public class EditHandler implements ActionListener {
 
@@ -39,11 +40,35 @@ public class EditHandler implements ActionListener {
 	
 	private void insertBdd()
 	{
-		
+	    DatabaseManager db = DatabaseManager.getInstance();
+	    
+	    String nom = fenetreEdit.getNomClient();
+	    String prenom = fenetreEdit.getPrenomClient();
+	    String particularite = fenetreEdit.getParticulariteClient();
+	    String email = fenetreEdit.getEmailClient();
+	    String codeClient = fenetreEdit.getIdClient();
+	    String numero = fenetreEdit.getTelephoneClient();
+	    
+	    String sql = "update  `client`"
+		    + "set `nomClient`='" + nom
+		    +"',`prenomClient`='" + prenom
+		    +"',`particulariteClient`='" + particularite
+		    +"',`emailClient`='" + email
+		    +"',`numeroClient`='" + numero
+		    +"' where `idClient`=" + codeClient;
+	    
+	    try
+	    {
+		db.executeUpdate(sql);
+	    }
+	    catch (Exception e)
+	    {
+		e.printStackTrace();
+	    }
 	}
 	
 	private void refreshTabClient()
 	{
-		
+	    parent.refreshTab();
 	}
 }
