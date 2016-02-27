@@ -185,6 +185,9 @@ public class FenetrePrincipale extends JFrame {
 			setupSelectionModel();
 			
 			tabClient.setModel(model);
+			//Double sort pour ranger par ordre décroissant
+			tabClient.getRowSorter().toggleSortOrder(4);
+			tabClient.getRowSorter().toggleSortOrder(4);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
