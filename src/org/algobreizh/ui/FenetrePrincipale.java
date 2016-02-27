@@ -45,8 +45,8 @@ public class FenetrePrincipale extends JFrame {
 		layout = new SpringLayout();
 		nomCommercial = new JLabel("Nom : Rambo");
 		emailCommercial = new JLabel("Email : john.rambo@algobreizh.fr");
-		prenomCommercial = new JLabel("Prï¿½nom : John");
-		numeroCommercial = new JLabel("Tï¿½lï¿½phone : 0649784545");
+		prenomCommercial = new JLabel("Prénom : John");
+		numeroCommercial = new JLabel("Téléphone : 0649784545");
 		tabClient = new JTable();
 		buttonEdit = new JButton("Editer");
 		buttonRdv = new JButton("RDV");
@@ -78,6 +78,7 @@ public class FenetrePrincipale extends JFrame {
 		
 		//Tableau client
 		tabClient.setFillsViewportHeight(true);
+		tabClient.setAutoCreateRowSorter(true);
 		JScrollPane scrollPan = new JScrollPane(tabClient);
 		mainPane.add(scrollPan);
 		
@@ -133,21 +134,38 @@ public class FenetrePrincipale extends JFrame {
 		try {
 			ResultSet res = db.execute(sql);
 			
-			ResultSetMetaData metaData = res.getMetaData();
-			int columnCount = metaData.getColumnCount();
-			
-			for(int i = 1; i <= columnCount; i++)
-			{
-				columnNames.add(metaData.getColumnName(i));
-			}
+			columnNames.add("Nom");
+			columnNames.add("Prenom");
+			columnNames.add("Téléphone");
+			columnNames.add("Email");
+			columnNames.add("RDV");
+			columnNames.add("Dernier RDV");
+			columnNames.add("ID");
 			
 			while(res.next())
 			{
 				Vector<Object> vector = new Vector<Object>();
 				
-				for(int i = 1; i <= columnCount; i++)
+				for(int i = 1; i <= columnNames.size(); i++)
 				{
-					vector.add(res.getObject(i));
+					Object o = res.getObject(i);
+					
+					if(i == 5 || i == 6)
+					{
+						if(!o.equals(0))
+						{
+							sql = "select dateRendezVous from rendezvous where `idRendezvous` =" + o;
+							ResultSet date = db.execute(sql);
+							date.next();
+							o = date.getObject(1);
+						}
+						else
+						{
+							o = "Aucun";
+						}
+					}
+					
+					vector.add(o);
 				}
 				
 				data.add(vector);
