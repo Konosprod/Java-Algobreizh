@@ -1,8 +1,8 @@
 package org.algobreizh.ui;
 
 
+import java.awt.Color;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -18,6 +18,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import org.algobreizh.metier.Commercial;
 import org.algobreizh.ui.actions.AjoutHandler;
 import org.algobreizh.ui.actions.EditHandler;
 import org.algobreizh.ui.actions.RdvHandler;
@@ -29,24 +30,29 @@ public class FenetrePrincipale extends JFrame {
 
 	private JPanel mainPane;
 	private SpringLayout layout;
-	private JLabel nomCommercial;
-	private JLabel emailCommercial;
-	private JLabel prenomCommercial;
-	private JLabel numeroCommercial;
+	private JLabel nom;
+	private JLabel email;
+	private JLabel prenom;
+	private JLabel numero;
+	private JLabel labelBonjour;
+	private JLabel labelNumero;
+	private JLabel labelRegion;
+	private JLabel region;
 	private JTable tabClient;
 	private JButton buttonEdit;
 	private JButton buttonRdv;
 	private JButton buttonAjout;
 	private JButton buttonSuppr;
+	private Commercial commercial;
 	
-	public FenetrePrincipale() {
+	public FenetrePrincipale(int idCommercial) {
 		
 		mainPane = new JPanel();
+		commercial = new Commercial();
 		layout = new SpringLayout();
-		nomCommercial = new JLabel("Nom : Rambo");
-		emailCommercial = new JLabel("Email : john.rambo@algobreizh.fr");
-		prenomCommercial = new JLabel("Prénom : John");
-		numeroCommercial = new JLabel("Téléphone : 0649784545");
+		labelBonjour = new JLabel("Bonjour,");
+		labelNumero = new JLabel("Tel :");
+		labelRegion = new JLabel("Region :");
 		tabClient = new JTable();
 		buttonEdit = new JButton("Editer");
 		buttonRdv = new JButton("RDV");
@@ -60,59 +66,15 @@ public class FenetrePrincipale extends JFrame {
 		ImageIcon icon = new ImageIcon("ressources/icon.png");
 		this.setIconImage(icon.getImage());
 		
-		//Nom Prenom commercial
-		mainPane.add(nomCommercial);
-		mainPane.add(prenomCommercial);
-		layout.putConstraint(SpringLayout.WEST, nomCommercial, 10, SpringLayout.WEST, mainPane);
-		layout.putConstraint(SpringLayout.NORTH, mainPane, 10, SpringLayout.NORTH, prenomCommercial);
-		layout.putConstraint(SpringLayout.NORTH, mainPane, 10, SpringLayout.NORTH, nomCommercial);
-		layout.putConstraint(SpringLayout.WEST, prenomCommercial, 10, SpringLayout.EAST, nomCommercial);
+		commercial.getInfoCommercial(idCommercial);
 		
-		//Numero et email
-		mainPane.add(emailCommercial);
-		mainPane.add(numeroCommercial);
-		layout.putConstraint(SpringLayout.WEST, emailCommercial, 10, SpringLayout.WEST, mainPane);
-		layout.putConstraint(SpringLayout.NORTH, emailCommercial, 20, SpringLayout.SOUTH, prenomCommercial);
-		layout.putConstraint(SpringLayout.NORTH, numeroCommercial, 20, SpringLayout.SOUTH, prenomCommercial);
-		layout.putConstraint(SpringLayout.WEST, numeroCommercial, 10, SpringLayout.EAST, emailCommercial);
+		nom = new JLabel(commercial.getNom());
+		prenom = new JLabel(commercial.getPrenom());
+		email = new JLabel(commercial.getEmail());
+		numero = new JLabel(commercial.getNumero());
+		region = new JLabel(commercial.getLibelleZone());
 		
-		//Tableau client
-		tabClient.setFillsViewportHeight(true);
-		tabClient.setAutoCreateRowSorter(true);
-		JScrollPane scrollPan = new JScrollPane(tabClient);
-		mainPane.add(scrollPan);
-		
-		layout.putConstraint(SpringLayout.WEST, scrollPan, 10, SpringLayout.WEST, mainPane);
-		layout.putConstraint(SpringLayout.NORTH, scrollPan, 20, SpringLayout.SOUTH, emailCommercial);
-		layout.putConstraint(SpringLayout.SOUTH, scrollPan, -10, SpringLayout.SOUTH, mainPane);
-		layout.putConstraint(SpringLayout.EAST, scrollPan, -100, SpringLayout.EAST, mainPane);
-		
-		//Boutton Rendez-vous
-		mainPane.add(buttonRdv);
-		layout.putConstraint(SpringLayout.EAST, buttonRdv, -10, SpringLayout.EAST, mainPane);
-		layout.putConstraint(SpringLayout.WEST, buttonRdv, 10, SpringLayout.EAST, scrollPan);
-		layout.putConstraint(SpringLayout.NORTH, buttonRdv, 20, SpringLayout.SOUTH, emailCommercial);
-		
-		//Boutton ajout
-		mainPane.add(buttonAjout);
-		layout.putConstraint(SpringLayout.EAST, buttonAjout, -10, SpringLayout.EAST, mainPane);
-		layout.putConstraint(SpringLayout.WEST, buttonAjout, 10, SpringLayout.EAST, scrollPan);
-		layout.putConstraint(SpringLayout.NORTH, buttonAjout, 10, SpringLayout.SOUTH, buttonRdv);
-		
-		//Button edit
-		mainPane.add(buttonEdit);
-		layout.putConstraint(SpringLayout.EAST, buttonEdit, -10, SpringLayout.EAST, mainPane);
-		layout.putConstraint(SpringLayout.WEST, buttonEdit, 10, SpringLayout.EAST, scrollPan);
-		layout.putConstraint(SpringLayout.NORTH, buttonEdit, 10, SpringLayout.SOUTH, buttonAjout);
-		
-		//Button suppr
-		mainPane.add(buttonSuppr);
-		layout.putConstraint(SpringLayout.EAST, buttonSuppr, -10, SpringLayout.EAST, mainPane);
-		layout.putConstraint(SpringLayout.WEST, buttonSuppr, 10, SpringLayout.EAST, scrollPan);
-		layout.putConstraint(SpringLayout.NORTH, buttonSuppr, 10, SpringLayout.SOUTH, buttonEdit);
-		
-		mainPane.setLayout(layout);
-		
+		setupLayout();
 		connectButtons();
 		
 		fillTabClient();
@@ -124,12 +86,16 @@ public class FenetrePrincipale extends JFrame {
 		setTitle("Algobreizh - Prise de rendez-vous");
 	}
 	
+	/**
+	 * Récupère les informations dans la base de donénes
+	 * et remplis la table client avec ces dernières
+	 */
 	private void fillTabClient()
 	{
 		DatabaseManager db = DatabaseManager.getInstance();
 		Vector<String> columnNames = new Vector<String>();
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-		String sql = "select nomClient, prenomClient, numeroClient, emailClient, dateRdv, dateDernierRdv, idClient from client where `idZoneGeo` = 9";
+		String sql = "select nomClient, prenomClient, numeroClient, emailClient, dateRdv, dateDernierRdv, idClient from client where `idZoneGeo` = " + commercial.getIdZone();
 		
 		try {
 			ResultSet res = db.execute(sql);
@@ -175,7 +141,7 @@ public class FenetrePrincipale extends JFrame {
 
 			    private static final long serialVersionUID = 965018577721069100L;
 
-				//Desactive l'Ã©dition de la cellule au double click
+				//Desactive l'édition de la cellule au double click
 				@Override
 				public boolean isCellEditable(int row, int column) {
 					return false;
@@ -193,6 +159,9 @@ public class FenetrePrincipale extends JFrame {
 		}
 	}
 	
+	/**
+	 * Connecte les boutons aux différents listeners
+	 */
 	private void connectButtons() 
 	{
 		buttonRdv.addActionListener(new RdvHandler(this));
@@ -200,6 +169,11 @@ public class FenetrePrincipale extends JFrame {
 		buttonAjout.addActionListener(new AjoutHandler(this));
 	}
 	
+	/**
+	 * Créer le model de la table client, permet d'activer
+	 * ou non certains boutons en fonction de la sélection
+	 * d'une ligne
+	 */
 	private void setupSelectionModel()
 	{
 		tabClient.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -222,13 +196,96 @@ public class FenetrePrincipale extends JFrame {
 		});
 	}
 	
+	/**
+	 * Récupère l'id du client de la ligne sélectionnée
+	 * @return id du client de la ligne sélectionnée
+	 */
 	public int getSelectedIndex()
 	{
 		return (int) tabClient.getValueAt(tabClient.getSelectedRow(), 6);
 	}
 	
+	/**
+	 * Met à jour le tableau de client
+	 */
 	public void refreshTab()
 	{
 	    fillTabClient();
+	}
+	
+	/**
+	 * Mets en place les différents composants de la fenêtre
+	 * et les place sur cette dernière
+	 */
+	private void setupLayout()
+	{
+		//Nom Prenom commercial
+		mainPane.add(labelBonjour);
+		mainPane.add(nom);
+		mainPane.add(prenom);
+		layout.putConstraint(SpringLayout.NORTH, labelBonjour, 10, SpringLayout.NORTH, mainPane);
+		layout.putConstraint(SpringLayout.WEST, labelBonjour, 10, SpringLayout.WEST, mainPane);
+		layout.putConstraint(SpringLayout.WEST, nom, 10, SpringLayout.EAST, labelBonjour);
+		layout.putConstraint(SpringLayout.NORTH, prenom, 10, SpringLayout.NORTH, mainPane);
+		layout.putConstraint(SpringLayout.NORTH, nom, 10, SpringLayout.NORTH, mainPane);
+		layout.putConstraint(SpringLayout.WEST, prenom, 5, SpringLayout.EAST, nom);
+		
+		//Email
+		mainPane.add(email);
+		layout.putConstraint(SpringLayout.WEST, email, 10, SpringLayout.WEST, mainPane);
+		layout.putConstraint(SpringLayout.NORTH, email, 10, SpringLayout.SOUTH, prenom);
+		
+		//Region
+		mainPane.add(labelRegion);
+		mainPane.add(region);
+		layout.putConstraint(SpringLayout.NORTH, region, 10, SpringLayout.NORTH, mainPane);
+		layout.putConstraint(SpringLayout.EAST, region, -10, SpringLayout.EAST, mainPane);
+		layout.putConstraint(SpringLayout.EAST, labelRegion, -5, SpringLayout.WEST, region);
+		layout.putConstraint(SpringLayout.NORTH, labelRegion, 10, SpringLayout.NORTH, mainPane);
+		
+		//Numero
+		mainPane.add(labelNumero);
+		mainPane.add(numero);
+		layout.putConstraint(SpringLayout.NORTH, numero, 10, SpringLayout.SOUTH, region);
+		layout.putConstraint(SpringLayout.EAST, numero, -10, SpringLayout.EAST, mainPane);
+		layout.putConstraint(SpringLayout.EAST, labelNumero, -5, SpringLayout.WEST, numero);
+		layout.putConstraint(SpringLayout.NORTH, labelNumero, 10, SpringLayout.SOUTH, region);
+		
+		//Tableau client
+		tabClient.setFillsViewportHeight(true);
+		tabClient.setAutoCreateRowSorter(true);
+		JScrollPane scrollPan = new JScrollPane(tabClient);
+		mainPane.add(scrollPan);
+		
+		layout.putConstraint(SpringLayout.WEST, scrollPan, 10, SpringLayout.WEST, mainPane);
+		layout.putConstraint(SpringLayout.NORTH, scrollPan, 20, SpringLayout.SOUTH, email);
+		layout.putConstraint(SpringLayout.SOUTH, scrollPan, -10, SpringLayout.SOUTH, mainPane);
+		layout.putConstraint(SpringLayout.EAST, scrollPan, -100, SpringLayout.EAST, mainPane);
+		
+		//Boutton Rendez-vous
+		mainPane.add(buttonRdv);
+		layout.putConstraint(SpringLayout.EAST, buttonRdv, -10, SpringLayout.EAST, mainPane);
+		layout.putConstraint(SpringLayout.WEST, buttonRdv, 10, SpringLayout.EAST, scrollPan);
+		layout.putConstraint(SpringLayout.NORTH, buttonRdv, 20, SpringLayout.SOUTH, email);
+		
+		//Boutton ajout
+		mainPane.add(buttonAjout);
+		layout.putConstraint(SpringLayout.EAST, buttonAjout, -10, SpringLayout.EAST, mainPane);
+		layout.putConstraint(SpringLayout.WEST, buttonAjout, 10, SpringLayout.EAST, scrollPan);
+		layout.putConstraint(SpringLayout.NORTH, buttonAjout, 10, SpringLayout.SOUTH, buttonRdv);
+		
+		//Button edit
+		mainPane.add(buttonEdit);
+		layout.putConstraint(SpringLayout.EAST, buttonEdit, -10, SpringLayout.EAST, mainPane);
+		layout.putConstraint(SpringLayout.WEST, buttonEdit, 10, SpringLayout.EAST, scrollPan);
+		layout.putConstraint(SpringLayout.NORTH, buttonEdit, 10, SpringLayout.SOUTH, buttonAjout);
+		
+		//Button suppr
+		mainPane.add(buttonSuppr);
+		layout.putConstraint(SpringLayout.EAST, buttonSuppr, -10, SpringLayout.EAST, mainPane);
+		layout.putConstraint(SpringLayout.WEST, buttonSuppr, 10, SpringLayout.EAST, scrollPan);
+		layout.putConstraint(SpringLayout.NORTH, buttonSuppr, 10, SpringLayout.SOUTH, buttonEdit);
+		
+		mainPane.setLayout(layout);
 	}
 }
