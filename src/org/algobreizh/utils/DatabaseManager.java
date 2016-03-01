@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Properties;
 import java.sql.Statement;
@@ -31,7 +32,7 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * Rï¿½cupï¿½re l'instance du DatabaseManager
+	 * Récupère l'instance du DatabaseManager
 	 * @return L'instance du DatabaseManager
 	 */
 	public static DatabaseManager getInstance()
@@ -94,5 +95,10 @@ public class DatabaseManager {
 	    Statement stmt = connection.createStatement();
 	    
 	    stmt.executeUpdate(request);
+	}
+	
+	public PreparedStatement prepareStatement(String sql) throws Exception
+	{
+		return connection.prepareStatement(sql);
 	}
 }
