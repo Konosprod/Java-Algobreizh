@@ -81,6 +81,15 @@ public class Commercial {
 			
 			ResultSet res = stmt.executeQuery();
 			
+			res.next();
+			
+			nom = res.getString("nomCommercial");
+			prenom = res.getString("prenomCommercial");
+			email = res.getString("emailCommercial");
+			numero = res.getString("numeroCommercial");
+			idZone = res.getString("idZoneGeo");
+			id = res.getString("idCommercial");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
