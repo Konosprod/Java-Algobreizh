@@ -23,7 +23,7 @@ public class ActionConnect implements ActionListener {
 	public void actionPerformed(ActionEvent e) 
 	{
 		parent.setVisible(false);
-		nextFrame = new FenetrePrincipale();
+		nextFrame = new FenetrePrincipale(1);
 		nextFrame.setLocationRelativeTo(parent);
 		nextFrame.setVisible(true);
 	}
