@@ -20,8 +20,11 @@ import org.algobreizh.utils.DatabaseManager;
 public class RdvHandler implements ActionListener {
 
 	private FenetreRdv fenetreRdv = null;
+	private FenetrePrincipale fenetrePrincipale = null;
 	
 	public RdvHandler(FenetrePrincipale parent) {
+		
+		fenetrePrincipale = parent;
 		
 		fenetreRdv = new FenetreRdv();
 		
@@ -51,14 +54,33 @@ public class RdvHandler implements ActionListener {
 	 */
 	private void insertBdd()
 	{
-		DatabaseManager db = DatabaseManager.getInstance();
-		String sql = "";
-		
-		try {
-			db.execute(sql);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		/*
+	    DatabaseManager db = DatabaseManager.getInstance();
+	   
+	    String heure = fenetreRdv.getHeure();
+	    String date = fenetreRdv.getDate();
+	    String lieu = fenetreRdv.getLieu();
+	    String contact = fenetreRdv.getContact();
+	    String idCommercial = fenetreRdv.getIdCommercial();
+	    
+	    date = date + heure;
+	    
+	    String sql = "insert into `rendezvous` (`contactRendezVous`, "
+	    + "`lieuRendezVous`, `idCommercial`, `dateRendezVous`)"
+	    + "values('"+contact+"','"+lieu+"','"+idCommercial+"','"+date+"')";
+	    
+	    try
+	    {
+		db.executeUpdate(sql);
+	    }
+	    catch (Exception e)
+	    {
+		e.printStackTrace();
+	    }
+	    
+	    
+	    
+	    */
 	}
 	
 	/**
@@ -67,6 +89,6 @@ public class RdvHandler implements ActionListener {
 	 */
 	private void refreshTabClient()
 	{
-		
+		fenetrePrincipale.refreshTab();
 	}
 }
