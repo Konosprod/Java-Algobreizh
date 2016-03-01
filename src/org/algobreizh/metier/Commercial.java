@@ -13,6 +13,7 @@ public class Commercial {
 	private String email = "";
 	private String idZone = "";
 	private String id = "";
+	private String libelleZone = "";
 	
 	public Commercial() {
 		
@@ -90,9 +91,29 @@ public class Commercial {
 			idZone = res.getString("idZoneGeo");
 			id = res.getString("idCommercial");
 			
+			sql = "select libelle from zonegeo where `idZoneGeo` = ?";
+			
+			stmt = db.prepareStatement(sql);
+			
+			stmt.setInt(1, Integer.valueOf(idZone));
+			
+			res = stmt.executeQuery();
+			
+			res.next();
+			
+			libelleZone = res.getString("libelle");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public String getLibelleZone() {
+		return libelleZone;
+	}
+
+	public void setLibelleZone(String libelleZone) {
+		this.libelleZone = libelleZone;
 	}
 }
