@@ -28,7 +28,7 @@ public class Utils {
 	 * Permet de faire la correspondance entre une valeur d'un byte et sa
 	 * représentation hexadécimale
 	 */
-	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+	final protected static char[] hexArray = "0123456789abcdef".toCharArray();
 	
 	
 	/**
