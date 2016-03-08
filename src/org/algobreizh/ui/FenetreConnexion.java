@@ -19,6 +19,7 @@ public class FenetreConnexion extends JFrame {
 	private JTextField idEntry;
 	private JPanel pan;
 	private JButton button;
+	private JLabel erreurConnexion;
 	
 	public FenetreConnexion() {
 		super("Algobreizh - Connexion");
@@ -32,6 +33,7 @@ public class FenetreConnexion extends JFrame {
 		passEntry = new JPasswordField(15);
 		SpringLayout layout = new SpringLayout();
 		pan.setLayout(layout);
+		erreurConnexion = new JLabel("Erreur de connexion");
 		
 		JLabel labelId = new JLabel("Identifiant : ");
 		JLabel labelPass = new JLabel("Mot de passe :");
@@ -55,6 +57,13 @@ public class FenetreConnexion extends JFrame {
 	
         layout.putConstraint(SpringLayout.NORTH, button, 75, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.WEST, button, 100, SpringLayout.WEST, pan);
+        
+        // placement du message d'erreur de connexion
+        pan.add(erreurConnexion);
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, erreurConnexion, 0, SpringLayout.HORIZONTAL_CENTER, pan);
+		layout.putConstraint(SpringLayout.NORTH, erreurConnexion, 50, SpringLayout.NORTH, button);
+		erreurConnexion.setVisible(false);
+		
 		
 		this.setContentPane(pan);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,6 +72,19 @@ public class FenetreConnexion extends JFrame {
 		this.setLocationRelativeTo(null);
 		
 		button.addActionListener(new ActionConnect(this,passEntry, idEntry));
+		
+	}
+	
+	public void afficherMsgErreur(boolean YesOrNo)
+	{
+		if (YesOrNo = true)
+		{
+			erreurConnexion.setVisible(true);
+		}
+		else
+		{
+			erreurConnexion.setVisible(true);
+		}
 	}
 	
 }

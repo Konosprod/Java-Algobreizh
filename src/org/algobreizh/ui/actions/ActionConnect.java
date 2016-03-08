@@ -8,13 +8,14 @@ import javax.swing.JFrame;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import org.algobreizh.ui.FenetreConnexion;
 import org.algobreizh.ui.FenetrePrincipale;
 import org.algobreizh.utils.DatabaseManager;
 import org.algobreizh.utils.Utils;
 
 public class ActionConnect implements ActionListener {
 
-	private JFrame parent;
+	private FenetreConnexion parent;
 	private JFrame nextFrame = null;
 	private String password;
 	private String idCommercial;
@@ -23,7 +24,7 @@ public class ActionConnect implements ActionListener {
 	
 	DatabaseManager db = DatabaseManager.getInstance();
 	
-	public ActionConnect(JFrame parent, JPasswordField passEntry, JTextField idEntry)
+	public ActionConnect(FenetreConnexion parent, JPasswordField passEntry, JTextField idEntry)
 	{
 		this.parent = parent;
 		this.idLogin = idEntry;
@@ -43,7 +44,6 @@ public class ActionConnect implements ActionListener {
 			hash.next();
 			
 			password = Utils.calculStringSHA256(password);
-			System.out.println(password);
 			
 			if (hash.getString("hash").equals(password))
 			{
@@ -58,7 +58,7 @@ public class ActionConnect implements ActionListener {
 			
 			
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
+			parent.afficherMsgErreur(true);
 			e1.printStackTrace();
 		}
 		
