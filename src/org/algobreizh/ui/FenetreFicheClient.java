@@ -2,6 +2,8 @@ package org.algobreizh.ui;
 
 
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,7 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import org.algobreizh.ui.actions.ValidateListener;
 import org.algobreizh.utils.DatabaseManager;
+import org.algobreizh.utils.Utils;
 
 public class FenetreFicheClient extends JDialog {
 	
@@ -44,21 +48,20 @@ public class FenetreFicheClient extends JDialog {
 	ImageIcon icon = new ImageIcon("ressources/icon.png");
 	this.setIconImage(icon.getImage());
  
-    // Crï¿½ation des JLabel
+    // Création des JLabel
     labelNomClient = new JLabel("Nom : ");
-    labelPrenomClient = new JLabel("Prï¿½nom : ");
+    labelPrenomClient = new JLabel("Prénom : ");
     labelEmailClient = new JLabel("Email : ");
-    labelTelephoneClient = new JLabel("Tï¿½lï¿½phone : ");
+    labelTelephoneClient = new JLabel("Téléphone : ");
     labelCodeClient = new JLabel("Code Client : ");
     codeClient = new JLabel("000761");
     labelParticularite = new JLabel("Particularite : ");
     labelDernierRDVClient = new JLabel("Dernier rendez-vous : ");
     labelProchainRDVClient = new JLabel("Prochain rendez-vous : ");
-    dernierRDVClient = new JLabel("Mercredi 18 Octobre 2015");
-    prochainRDVClient = new JLabel("Mercredi 18 Octobre 2015");
+    dernierRDVClient = new JLabel("");
+    prochainRDVClient = new JLabel("");
     
-    // Crï¿½ation des JtextField
-    
+    // Création des JtextField
     nomClient = new JTextField(20);
     prenomClient = new JTextField(20);
     emailClient = new JTextField(20);
@@ -71,7 +74,6 @@ public class FenetreFicheClient extends JDialog {
     	prenomClient.setEditable(true);
     	emailClient.setEditable(true);
     	particularite.setEditable(true);
-    	
     }
     else
     {
@@ -79,94 +81,15 @@ public class FenetreFicheClient extends JDialog {
     	prenomClient.setEditable(false);
     	emailClient.setEditable(false);
     	particularite.setEditable(false);
-    	
-    	
-    	
     }
     
     valider = new JButton("Valider");
     
-    //Instanciation d'un objet JPanel
-    JPanel pan = new JPanel();
-    SpringLayout layout = new SpringLayout();
+    buildLayout();
     
     
+    valider.addActionListener(new ValidateListener(this));
     
-    pan.add(codeClient);
-    pan.add(labelCodeClient);
-    
-    // Prenom du client
-    pan.add(labelNomClient);
-    pan.add(nomClient);
-    layout.putConstraint(SpringLayout.WEST, labelNomClient, 10, SpringLayout.WEST, pan);
-    layout.putConstraint(SpringLayout.NORTH, labelNomClient, 10, SpringLayout.NORTH, pan);
-    layout.putConstraint(SpringLayout.NORTH, nomClient, 10, SpringLayout.NORTH, pan);
-    layout.putConstraint(SpringLayout.WEST, nomClient, 39, SpringLayout.EAST, labelNomClient);
-    
-    // Prenom du client
-    pan.add(labelPrenomClient);
-    pan.add(prenomClient);
-    layout.putConstraint(SpringLayout.WEST, labelPrenomClient, 10, SpringLayout.WEST, pan);
-    layout.putConstraint(SpringLayout.NORTH, labelPrenomClient, 30, SpringLayout.NORTH, labelNomClient);
-    layout.putConstraint(SpringLayout.NORTH, prenomClient, 30, SpringLayout.NORTH, nomClient);
-    layout.putConstraint(SpringLayout.WEST, prenomClient, 20, SpringLayout.EAST, labelPrenomClient);
-
-    // Email du client
-    pan.add(labelEmailClient);
-    pan.add(emailClient);
-    layout.putConstraint(SpringLayout.WEST, labelEmailClient, 10, SpringLayout.WEST, pan);
-    layout.putConstraint(SpringLayout.NORTH, labelEmailClient, 30, SpringLayout.NORTH, labelPrenomClient);
-    layout.putConstraint(SpringLayout.NORTH, emailClient, 30, SpringLayout.NORTH, prenomClient);
-    layout.putConstraint(SpringLayout.WEST, emailClient, 34, SpringLayout.EAST, labelEmailClient);
-    
- // Telephone du client
-    pan.add(labelTelephoneClient);
-    pan.add(telephoneClient);
-    layout.putConstraint(SpringLayout.WEST, labelTelephoneClient, 10, SpringLayout.WEST, pan);
-    layout.putConstraint(SpringLayout.NORTH, labelTelephoneClient, 30, SpringLayout.NORTH, labelEmailClient);
-    layout.putConstraint(SpringLayout.NORTH, telephoneClient, 30, SpringLayout.NORTH, emailClient);
-    layout.putConstraint(SpringLayout.WEST, telephoneClient, 0, SpringLayout.WEST, emailClient);
-    
-    // Code du client
-    pan.add(labelCodeClient);
-    pan.add(codeClient);
-    layout.putConstraint(SpringLayout.EAST, labelCodeClient, -5, SpringLayout.WEST, codeClient);
-    layout.putConstraint(SpringLayout.NORTH, labelCodeClient, 10, SpringLayout.NORTH, pan);
-    layout.putConstraint(SpringLayout.NORTH, codeClient, 10, SpringLayout.NORTH, pan);
-    layout.putConstraint(SpringLayout.EAST, codeClient, -20, SpringLayout.EAST, pan);
-    
-    // Particularite du client
-    pan.add(labelParticularite);
-    pan.add(particularite);
-    layout.putConstraint(SpringLayout.WEST, labelParticularite, 10, SpringLayout.WEST, pan);
-    layout.putConstraint(SpringLayout.NORTH, labelParticularite, 60, SpringLayout.NORTH, labelTelephoneClient);
-    layout.putConstraint(SpringLayout.NORTH, particularite, 60, SpringLayout.NORTH, telephoneClient);
-    layout.putConstraint(SpringLayout.WEST, particularite, 34, SpringLayout.EAST, labelTelephoneClient);
-    
-    // Dernier Rendez-vous et prochain Rendez-vous
-    pan.add(labelDernierRDVClient);
-    pan.add(labelProchainRDVClient);
-    pan.add(dernierRDVClient);
-    pan.add(prochainRDVClient);
-    layout.putConstraint(SpringLayout.WEST, labelDernierRDVClient, 10, SpringLayout.WEST, pan);
-    layout.putConstraint(SpringLayout.NORTH, labelDernierRDVClient, 60, SpringLayout.NORTH, labelParticularite);
-    layout.putConstraint(SpringLayout.NORTH, dernierRDVClient, 60, SpringLayout.NORTH, particularite);
-    layout.putConstraint(SpringLayout.WEST, dernierRDVClient, 34, SpringLayout.EAST, labelDernierRDVClient);
-    layout.putConstraint(SpringLayout.WEST, labelProchainRDVClient, 10, SpringLayout.WEST, pan);
-    layout.putConstraint(SpringLayout.NORTH, labelProchainRDVClient, 30, SpringLayout.NORTH, labelDernierRDVClient);
-    layout.putConstraint(SpringLayout.NORTH, prochainRDVClient, 30, SpringLayout.NORTH, dernierRDVClient);
-    layout.putConstraint(SpringLayout.WEST, prochainRDVClient, 25, SpringLayout.EAST, labelProchainRDVClient);
-    
-    
-    // bouton valider
-    pan.add(valider);
-    layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, valider, 10, SpringLayout.HORIZONTAL_CENTER, pan);
-    layout.putConstraint(SpringLayout.NORTH, valider, 60, SpringLayout.NORTH, prochainRDVClient);
-    
-    
-    //On prï¿½vient notre JFrame que notre JPanel sera son content pane
-    pan.setLayout(layout);
-    this.setContentPane(pan); 
 }
 	
 	public String getNomClient()
@@ -204,7 +127,7 @@ public class FenetreFicheClient extends JDialog {
 		DatabaseManager db = DatabaseManager.getInstance();
 		
 		try {
-			ResultSet res = db.execute("SELECT nomClient, prenomClient, emailClient, particulariteClient, numeroClient FROM client WHERE idClient = " + String.valueOf(id));
+			ResultSet res = db.execute("SELECT nomClient, prenomClient, emailClient, particulariteClient, numeroClient, dateRdv, dateDernierRdv FROM client WHERE idClient = " + String.valueOf(id));
 			res.next();
 			nomClient.setText(res.getString("nomClient"));
 			prenomClient.setText(res.getString("prenomClient"));
@@ -212,12 +135,115 @@ public class FenetreFicheClient extends JDialog {
 			particularite.setText(res.getString("particulariteClient"));
 			codeClient.setText(String.format("%05d", id));
 			telephoneClient.setText(res.getString("numeroClient"));
-		
+			
+			if(res.getInt("dateRdv") != 0)
+			{
+				ResultSet dateRdv = db.execute("select dateRendezVous from rendezvous where `idRendezvous` = " + String.valueOf(res.getInt("dateRdv")));
+				dateRdv.next();
+				prochainRDVClient.setText(Utils.formatDateFromSql(dateRdv.getString("dateRendezVous")));
+			}
+			else
+			{
+				prochainRDVClient.setText("Aucun");
+			}
+			
+			if(res.getInt("dateDernierRdv") != 0)
+			{
+				ResultSet dateDernierRdv = db.execute("select dateRendezVous from rendezvous where `idRendezvous` = " + String.valueOf(res.getInt("dateDernierRdv")));
+				dateDernierRdv.next();
+				dernierRDVClient.setText(Utils.formatDateFromSql(dateDernierRdv.getString("dateRendezVous")));
+			}
+			else
+			{
+				dernierRDVClient.setText("Aucun");
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
+	private void buildLayout()
+	{
+	    JPanel pan = new JPanel();
+	    SpringLayout layout = new SpringLayout();
+	    
+	    pan.add(codeClient);
+	    pan.add(labelCodeClient);
+	    
+	    // Prenom du client
+	    pan.add(labelNomClient);
+	    pan.add(nomClient);
+	    layout.putConstraint(SpringLayout.WEST, labelNomClient, 10, SpringLayout.WEST, pan);
+	    layout.putConstraint(SpringLayout.NORTH, labelNomClient, 10, SpringLayout.NORTH, pan);
+	    layout.putConstraint(SpringLayout.NORTH, nomClient, 10, SpringLayout.NORTH, pan);
+	    layout.putConstraint(SpringLayout.WEST, nomClient, 39, SpringLayout.EAST, labelNomClient);
+	    
+	    // Prenom du client
+	    pan.add(labelPrenomClient);
+	    pan.add(prenomClient);
+	    layout.putConstraint(SpringLayout.WEST, labelPrenomClient, 10, SpringLayout.WEST, pan);
+	    layout.putConstraint(SpringLayout.NORTH, labelPrenomClient, 30, SpringLayout.NORTH, labelNomClient);
+	    layout.putConstraint(SpringLayout.NORTH, prenomClient, 30, SpringLayout.NORTH, nomClient);
+	    layout.putConstraint(SpringLayout.WEST, prenomClient, 20, SpringLayout.EAST, labelPrenomClient);
+
+	    // Email du client
+	    pan.add(labelEmailClient);
+	    pan.add(emailClient);
+	    layout.putConstraint(SpringLayout.WEST, labelEmailClient, 10, SpringLayout.WEST, pan);
+	    layout.putConstraint(SpringLayout.NORTH, labelEmailClient, 30, SpringLayout.NORTH, labelPrenomClient);
+	    layout.putConstraint(SpringLayout.NORTH, emailClient, 30, SpringLayout.NORTH, prenomClient);
+	    layout.putConstraint(SpringLayout.WEST, emailClient, 34, SpringLayout.EAST, labelEmailClient);
+	    
+	 // Telephone du client
+	    pan.add(labelTelephoneClient);
+	    pan.add(telephoneClient);
+	    layout.putConstraint(SpringLayout.WEST, labelTelephoneClient, 10, SpringLayout.WEST, pan);
+	    layout.putConstraint(SpringLayout.NORTH, labelTelephoneClient, 30, SpringLayout.NORTH, labelEmailClient);
+	    layout.putConstraint(SpringLayout.NORTH, telephoneClient, 30, SpringLayout.NORTH, emailClient);
+	    layout.putConstraint(SpringLayout.WEST, telephoneClient, 0, SpringLayout.WEST, emailClient);
+	    
+	    // Code du client
+	    pan.add(labelCodeClient);
+	    pan.add(codeClient);
+	    layout.putConstraint(SpringLayout.EAST, labelCodeClient, -5, SpringLayout.WEST, codeClient);
+	    layout.putConstraint(SpringLayout.NORTH, labelCodeClient, 10, SpringLayout.NORTH, pan);
+	    layout.putConstraint(SpringLayout.NORTH, codeClient, 10, SpringLayout.NORTH, pan);
+	    layout.putConstraint(SpringLayout.EAST, codeClient, -20, SpringLayout.EAST, pan);
+	    
+	    // Particularite du client
+	    pan.add(labelParticularite);
+	    pan.add(particularite);
+	    layout.putConstraint(SpringLayout.WEST, labelParticularite, 10, SpringLayout.WEST, pan);
+	    layout.putConstraint(SpringLayout.NORTH, labelParticularite, 60, SpringLayout.NORTH, labelTelephoneClient);
+	    layout.putConstraint(SpringLayout.NORTH, particularite, 60, SpringLayout.NORTH, telephoneClient);
+	    layout.putConstraint(SpringLayout.WEST, particularite, 34, SpringLayout.EAST, labelTelephoneClient);
+	    
+	    // Dernier Rendez-vous
+	    pan.add(labelDernierRDVClient);
+	    pan.add(dernierRDVClient);
+	    layout.putConstraint(SpringLayout.WEST, labelDernierRDVClient, 10, SpringLayout.WEST, pan);
+	    layout.putConstraint(SpringLayout.NORTH, labelDernierRDVClient, 60, SpringLayout.NORTH, labelParticularite);
+	    layout.putConstraint(SpringLayout.NORTH, dernierRDVClient, 60, SpringLayout.NORTH, particularite);
+	    layout.putConstraint(SpringLayout.WEST, dernierRDVClient, 34, SpringLayout.EAST, labelDernierRDVClient);
+	    
+	    // Prochain Rendez-vous
+	    pan.add(labelProchainRDVClient);
+	    pan.add(prochainRDVClient);
+	    layout.putConstraint(SpringLayout.WEST, labelProchainRDVClient, 10, SpringLayout.WEST, pan);
+	    layout.putConstraint(SpringLayout.NORTH, labelProchainRDVClient, 30, SpringLayout.NORTH, labelDernierRDVClient);
+	    layout.putConstraint(SpringLayout.NORTH, prochainRDVClient, 30, SpringLayout.NORTH, dernierRDVClient);
+	    layout.putConstraint(SpringLayout.WEST, prochainRDVClient, 25, SpringLayout.EAST, labelProchainRDVClient);
+	    
+	    
+	    // bouton valider
+	    pan.add(valider);
+	    layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, valider, 10, SpringLayout.HORIZONTAL_CENTER, pan);
+	    layout.putConstraint(SpringLayout.NORTH, valider, 60, SpringLayout.NORTH, prochainRDVClient);
+	    
+	    
+	    //On prévient notre JFrame que notre JPanel sera son content pane
+	    pan.setLayout(layout);
+	    this.setContentPane(pan); 
+	}
 }

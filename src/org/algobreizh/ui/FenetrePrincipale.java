@@ -1,7 +1,9 @@
 package org.algobreizh.ui;
 
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -95,10 +97,14 @@ public class FenetrePrincipale extends JFrame {
 		DatabaseManager db = DatabaseManager.getInstance();
 		Vector<String> columnNames = new Vector<String>();
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-		String sql = "select nomClient, prenomClient, numeroClient, emailClient, dateRdv, dateDernierRdv, idClient from client where `idZoneGeo` = " + commercial.getIdZone();
+		String sql = "select nomClient, prenomClient, numeroClient, emailClient, dateRdv, dateDernierRdv, idClient from client where `idZoneGeo` = ?";
 		
 		try {
-			ResultSet res = db.execute(sql);
+			
+			PreparedStatement stmt = db.prepareStatement(sql);
+			stmt.setString(1, commercial.getIdZone());
+			
+			ResultSet res = stmt.executeQuery();
 			
 			columnNames.add("Nom");
 			columnNames.add("Prenom");
@@ -120,8 +126,10 @@ public class FenetrePrincipale extends JFrame {
 					{
 						if(!o.equals(0))
 						{
-							sql = "select dateRendezVous from rendezvous where `idRendezvous` =" + o;
-							ResultSet date = db.execute(sql);
+							sql = "select dateRendezVous from rendezvous where `idRendezvous` = ?";
+							stmt = db.prepareStatement(sql);
+							stmt.setInt(1, (int) o);
+							ResultSet date = stmt.executeQuery();
 							date.next();
 							o = date.getObject(1);
 						}

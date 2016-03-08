@@ -47,21 +47,15 @@ public class ActionConnect implements ActionListener {
 			
 			if (hash.getString("hash").equals(password))
 			{
-				
-				
 				parent.setVisible(false);
 				nextFrame = new FenetrePrincipale(Integer.valueOf(idCommercial));
 				nextFrame.setLocationRelativeTo(parent);
 				nextFrame.setVisible(true);
 			}
 			
-			
-			
 		} catch (Exception e1) {
 			parent.afficherMsgErreur(true);
 			e1.printStackTrace();
 		}
-		
 	}
-
 }

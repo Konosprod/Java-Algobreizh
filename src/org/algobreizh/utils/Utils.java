@@ -3,6 +3,9 @@ package org.algobreizh.utils;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Utils {
 	
@@ -70,5 +73,19 @@ public class Utils {
 		
 		return ret;
 	}
-
+	
+	public static String formatDateFromSql(String dateString)
+	{
+		SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy hh:mm");
+		SimpleDateFormat sqlFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date d = null;
+		
+		try {
+			d = sqlFormat.parse(dateString);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return format.format(d);
+	}
 }
