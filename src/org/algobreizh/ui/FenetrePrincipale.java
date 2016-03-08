@@ -1,7 +1,6 @@
 package org.algobreizh.ui;
 
 
-import java.awt.Color;
 import java.sql.ResultSet;
 import java.util.Vector;
 
@@ -12,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -194,6 +194,8 @@ public class FenetrePrincipale extends JFrame {
 				}
 			}
 		});
+		
+		tabClient.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
 	
 	/**
