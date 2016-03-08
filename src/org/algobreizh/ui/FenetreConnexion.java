@@ -35,6 +35,7 @@ public class FenetreConnexion extends JFrame {
 		pan.setLayout(layout);
 		erreurConnexion = new JLabel("Erreur de connexion");
 		
+		
 		JLabel labelId = new JLabel("Identifiant : ");
 		JLabel labelPass = new JLabel("Mot de passe :");
 		
