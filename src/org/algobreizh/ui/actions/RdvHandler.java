@@ -4,17 +4,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Date;
 
 import org.algobreizh.ui.FenetrePrincipale;
 import org.algobreizh.ui.FenetreRdv;
 import org.algobreizh.utils.DatabaseManager;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 /**
  * @author Alex
  * 
- * Classe qui affiche la fenêtre de selection de rendez-vous.
- * Elle s'occupe aussi de l'insertion danse la base de données
- * du rendez-vous sélectionné.
+ * Classe qui affiche la fenï¿½tre de selection de rendez-vous.
+ * Elle s'occupe aussi de l'insertion danse la base de donnï¿½es
+ * du rendez-vous sï¿½lectionnï¿½.
  *
  */
 public class RdvHandler implements ActionListener {
@@ -31,15 +35,14 @@ public class RdvHandler implements ActionListener {
 		fenetreRdv.setModal(true);
 		fenetreRdv.setLocationRelativeTo(parent);
 		
-		//Ajoute un listener pour effectuer une action à la
+		//Ajoute un listener pour effectuer une action ï¿½ la
 		//fermeture de la fenetreRDV
 		fenetreRdv.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				//Recupérer les infos
 				insertBdd();
 				refreshTabClient();
-				super.windowDeactivated(e);
+				super.windowDeactivated(e);			
 			}
 		});
 	}
@@ -50,45 +53,58 @@ public class RdvHandler implements ActionListener {
 	}
 	
 	/**
-	 * Insert un RDV dans la base de données
+	 * Insert un RDV dans la base de donnï¿½es
 	 */
 	private void insertBdd()
 	{
-		/*
 	    DatabaseManager db = DatabaseManager.getInstance();
 	   
-	    String heure = fenetreRdv.getHeure();
-	    String date = fenetreRdv.getDate();
+	    Date date = fenetreRdv.getDate();
 	    String lieu = fenetreRdv.getLieu();
 	    String contact = fenetreRdv.getContact();
-	    String idCommercial = fenetreRdv.getIdCommercial();
+	    int idCommercial = Integer.valueOf(fenetrePrincipale.getCommercial().getId());
+	    int idClient = fenetrePrincipale.getSelectedIndex();
 	    
-	    date = date + heure;
-	    
-	    String sql = "insert into `rendezvous` (`contactRendezVous`, "
+	    String sql = "insert into `rendezvous` (`idClient`, `contactRendezVous`, "
 	    + "`lieuRendezVous`, `idCommercial`, `dateRendezVous`)"
-	    + "values('"+contact+"','"+lieu+"','"+idCommercial+"','"+date+"')";
+	    + "values(?, ?, ?, ?, ?)";
 	    
 	    try
 	    {
-		db.executeUpdate(sql);
+		PreparedStatement stmt = db.prepareStatement(sql);
+		
+		stmt.setInt(1, idClient);
+		stmt.setString(2, contact);
+		stmt.setString(3, lieu);
+		stmt.setInt(4, idCommercial);
+		stmt.setDate(5, new java.sql.Date(date.getTime()));
+		
+		stmt.executeUpdate();
+		
+		sql = "select dateRdv from client where idClient = " + String.valueOf(fenetrePrincipale.getSelectedIndex());
+
+		ResultSet res = db.execute(sql);
+		res.next();
+		
+		int dateRdv = res.getInt("dateRdv");
+			
+		sql = "update client set dateRdv =";
+		
 	    }
 	    catch (Exception e)
 	    {
 		e.printStackTrace();
 	    }
 	    
-	    
-	    
-	    */
 	}
 	
 	/**
-	 * Actualise le tableau de la fenêtre principale des clients
+	 * Actualise le tableau de la fenï¿½tre principale des clients
 	 * avec le nouveau rendez-vous
 	 */
 	private void refreshTabClient()
 	{
 		fenetrePrincipale.refreshTab();
 	}
+	
 }

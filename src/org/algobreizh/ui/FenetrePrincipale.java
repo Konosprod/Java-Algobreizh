@@ -89,8 +89,8 @@ public class FenetrePrincipale extends JFrame {
 	}
 	
 	/**
-	 * Récupère les informations dans la base de donénes
-	 * et remplis la table client avec ces dernières
+	 * Rï¿½cupï¿½re les informations dans la base de donï¿½nes
+	 * et remplis la table client avec ces derniï¿½res
 	 */
 	private void fillTabClient()
 	{
@@ -108,7 +108,7 @@ public class FenetrePrincipale extends JFrame {
 			
 			columnNames.add("Nom");
 			columnNames.add("Prenom");
-			columnNames.add("Téléphone");
+			columnNames.add("Tï¿½lï¿½phone");
 			columnNames.add("Email");
 			columnNames.add("RDV");
 			columnNames.add("Dernier RDV");
@@ -149,7 +149,7 @@ public class FenetrePrincipale extends JFrame {
 
 			    private static final long serialVersionUID = 965018577721069100L;
 
-				//Desactive l'édition de la cellule au double click
+				//Desactive l'ï¿½dition de la cellule au double click
 				@Override
 				public boolean isCellEditable(int row, int column) {
 					return false;
@@ -159,7 +159,7 @@ public class FenetrePrincipale extends JFrame {
 			setupSelectionModel();
 			
 			tabClient.setModel(model);
-			//Double sort pour ranger par ordre décroissant
+			//Double sort pour ranger par ordre dï¿½croissant
 			tabClient.getRowSorter().toggleSortOrder(4);
 			tabClient.getRowSorter().toggleSortOrder(4);
 		} catch (Exception e) {
@@ -168,7 +168,7 @@ public class FenetrePrincipale extends JFrame {
 	}
 	
 	/**
-	 * Connecte les boutons aux différents listeners
+	 * Connecte les boutons aux diffï¿½rents listeners
 	 */
 	private void connectButtons() 
 	{
@@ -178,8 +178,8 @@ public class FenetrePrincipale extends JFrame {
 	}
 	
 	/**
-	 * Créer le model de la table client, permet d'activer
-	 * ou non certains boutons en fonction de la sélection
+	 * Crï¿½er le model de la table client, permet d'activer
+	 * ou non certains boutons en fonction de la sï¿½lection
 	 * d'une ligne
 	 */
 	private void setupSelectionModel()
@@ -207,8 +207,8 @@ public class FenetrePrincipale extends JFrame {
 	}
 	
 	/**
-	 * Récupère l'id du client de la ligne sélectionnée
-	 * @return id du client de la ligne sélectionnée
+	 * Rï¿½cupï¿½re l'id du client de la ligne sï¿½lectionnï¿½e
+	 * @return id du client de la ligne sï¿½lectionnï¿½e
 	 */
 	public int getSelectedIndex()
 	{
@@ -216,7 +216,7 @@ public class FenetrePrincipale extends JFrame {
 	}
 	
 	/**
-	 * Met à jour le tableau de client
+	 * Met ï¿½ jour le tableau de client
 	 */
 	public void refreshTab()
 	{
@@ -224,8 +224,8 @@ public class FenetrePrincipale extends JFrame {
 	}
 	
 	/**
-	 * Mets en place les différents composants de la fenêtre
-	 * et les place sur cette dernière
+	 * Mets en place les diffï¿½rents composants de la fenï¿½tre
+	 * et les place sur cette derniï¿½re
 	 */
 	private void setupLayout()
 	{
@@ -297,5 +297,10 @@ public class FenetrePrincipale extends JFrame {
 		layout.putConstraint(SpringLayout.NORTH, buttonSuppr, 10, SpringLayout.SOUTH, buttonEdit);
 		
 		mainPane.setLayout(layout);
+	}
+	
+	public Commercial getCommercial()
+	{
+	    return commercial;
 	}
 }

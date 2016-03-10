@@ -1,5 +1,6 @@
 package org.algobreizh.ui;
 
+import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.ImageIcon;
@@ -7,88 +8,143 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 import javax.swing.SpringLayout;
 
+import org.algobreizh.ui.actions.ValidateListener;
 import org.algobreizh.utils.DateLabelFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
-
 public class FenetreRdv extends JDialog {
-    
-	private static final long serialVersionUID = 6536480305206836568L;
-	
-	private static JLabel labellieurdv;
+
+    private static final long serialVersionUID = 6536480305206836568L;
+
+    private static JLabel labellieurdv;
     private static JLabel labeldaterdv;
     private static JLabel labelcontactrdv;
+    private static JLabel labelHeure;
     private static JTextField lieurdv;
     private static JTextField contactrdv;
     private static JButton bouttonValide;
-    public FenetreRdv(){
-        //renomme la fenetre
+    private static JDatePickerImpl daterdv;
+    private static JSpinner heureRdv;
     
-        this.setTitle("Algobreizh - Ajout rendez-vous");
-        //Redimensionne la fenetre
-        this.setSize(400, 200);
-        
-		ImageIcon icon = new ImageIcon("ressources/icon.png");
-		this.setIconImage(icon.getImage());
-        
-        //affecte des valeurs au Panel ainsi qu'au JTextField et le boutton
-        labellieurdv= new JLabel("Lieu du rendez vous : ");
-        labeldaterdv = new JLabel("Date du rendez vous : ");
-        labelcontactrdv = new JLabel("Personne à contacter : ");
-        bouttonValide = new JButton("Valider");
-        contactrdv= new JTextField (20);
-        lieurdv = new JTextField(20);
-        
-        //Instanciation d'un objet JPanel
-        JPanel panel = new JPanel();
-        SpringLayout layout = new SpringLayout();
-        panel.setLayout(layout);//permet de découper le panel en plusieur partie
-        
-        UtilDateModel model = new UtilDateModel();
-        JDatePanelImpl datePanel = new JDatePanelImpl(model, new Properties());
-        JDatePickerImpl daterdv = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-        
-        /* Permet d'avoir un spinner pour l'heure du rendez-vous
-        JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
-        JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm");
-        
-        
-        timeSpinner.setEditor(timeEditor);
-        timeSpinner.setValue(new Date()); // will only show the current time
-        */
-        
-        //Ajoute Les elements lablleieurdv et lieurdv dans le Frame
-        panel.add(bouttonValide);
-        panel.add(labellieurdv);
-        panel.add(lieurdv);
-        panel.add(labeldaterdv);
-        panel.add(daterdv);
-        panel.add(labelcontactrdv);
-        panel.add(contactrdv);
-        
-        layout.putConstraint(SpringLayout.WEST, labellieurdv, 11, SpringLayout.WEST, panel);
-        layout.putConstraint(SpringLayout.NORTH, labellieurdv, 10, SpringLayout.NORTH, panel);
-        layout.putConstraint(SpringLayout.NORTH, lieurdv, 10, SpringLayout.NORTH, panel);
-        layout.putConstraint(SpringLayout.WEST, lieurdv, 11, SpringLayout.EAST, labellieurdv);
-        
-        layout.putConstraint(SpringLayout.WEST, labeldaterdv, 10, SpringLayout.WEST, panel);
-        layout.putConstraint(SpringLayout.NORTH, labeldaterdv, 10, SpringLayout.SOUTH, labellieurdv);
-        layout.putConstraint(SpringLayout.NORTH, daterdv, 10, SpringLayout.SOUTH, lieurdv);
-        layout.putConstraint(SpringLayout.WEST, daterdv, 10, SpringLayout.EAST, labeldaterdv);
-        
-        layout.putConstraint(SpringLayout.WEST, labelcontactrdv, 10, SpringLayout.WEST, panel);
-        layout.putConstraint(SpringLayout.NORTH, labelcontactrdv, 10, SpringLayout.SOUTH, daterdv);
-        layout.putConstraint(SpringLayout.NORTH, contactrdv, 10, SpringLayout.SOUTH, daterdv);
-        layout.putConstraint(SpringLayout.WEST, contactrdv, 1, SpringLayout.EAST, labelcontactrdv);
-        
-        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, bouttonValide, 0, SpringLayout.HORIZONTAL_CENTER, panel);
-        layout.putConstraint(SpringLayout.NORTH, bouttonValide, 10, SpringLayout.SOUTH, labelcontactrdv);
-        
-        this.setContentPane(panel);
+    public FenetreRdv()
+    {
+	// renomme la fenetre
+
+	this.setTitle("Algobreizh - Ajout rendez-vous");
+	// Redimensionne la fenetre
+	this.setSize(500, 200);
+
+	ImageIcon icon = new ImageIcon("ressources/icon.png");
+	this.setIconImage(icon.getImage());
+
+	// affecte des valeurs au Panel ainsi qu'au JTextField et le boutton
+	labellieurdv = new JLabel("Lieu du rendez vous : ");
+	labeldaterdv = new JLabel("Date du rendez vous : ");
+	labelcontactrdv = new JLabel("Personne ï¿½ contacter : ");
+	bouttonValide = new JButton("Valider");
+	labelHeure = new JLabel("Heure :");
+	contactrdv = new JTextField(20);
+	lieurdv = new JTextField(20);
+
+	// Instanciation d'un objet JPanel
+	JPanel panel = new JPanel();
+	SpringLayout layout = new SpringLayout();
+	panel.setLayout(layout);
+
+	UtilDateModel model = new UtilDateModel();
+	JDatePanelImpl datePanel = new JDatePanelImpl(model, new Properties());
+	daterdv = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+
+	heureRdv = new JSpinner(new SpinnerDateModel());
+	JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(heureRdv, "HH:mm");
+
+	heureRdv.setEditor(timeEditor);
+	heureRdv.setValue(new Date());
+
+	// Ajoute Les elements lablleieurdv et lieurdv dans le Frame
+	
+	// Lieu du rendez-vous
+	panel.add(labellieurdv);
+	panel.add(lieurdv);
+	layout.putConstraint(SpringLayout.WEST, labellieurdv, 11,
+		SpringLayout.WEST, panel);
+	layout.putConstraint(SpringLayout.NORTH, labellieurdv, 10,
+		SpringLayout.NORTH, panel);
+	layout.putConstraint(SpringLayout.NORTH, lieurdv, 10,
+		SpringLayout.NORTH, panel);
+	layout.putConstraint(SpringLayout.WEST, lieurdv, 11, SpringLayout.EAST,
+		labellieurdv);
+
+	// Date du rendez-vous
+	panel.add(labeldaterdv);
+	panel.add(daterdv);
+	layout.putConstraint(SpringLayout.WEST, labeldaterdv, 10,
+		SpringLayout.WEST, panel);
+	layout.putConstraint(SpringLayout.NORTH, labeldaterdv, 10,
+		SpringLayout.SOUTH, labellieurdv);
+	layout.putConstraint(SpringLayout.NORTH, daterdv, 10,
+		SpringLayout.SOUTH, lieurdv);
+	layout.putConstraint(SpringLayout.WEST, daterdv, 10, SpringLayout.EAST,
+		labeldaterdv);
+	
+	//Heure du rendez-vous
+	panel.add(labelHeure);
+	panel.add(heureRdv);
+	layout.putConstraint(SpringLayout.WEST, labelHeure, 10, SpringLayout.WEST, panel);
+	layout.putConstraint(SpringLayout.NORTH, labelHeure, 10, SpringLayout.SOUTH, daterdv);
+	layout.putConstraint(SpringLayout.WEST, heureRdv, 10, SpringLayout.EAST, labelHeure);
+	layout.putConstraint(SpringLayout.NORTH, heureRdv, 10, SpringLayout.SOUTH, daterdv);
+	
+	// Champ personne Ã  contacter
+	panel.add(labelcontactrdv);
+	panel.add(contactrdv);
+	layout.putConstraint(SpringLayout.WEST, labelcontactrdv, 10,
+		SpringLayout.WEST, panel);
+	layout.putConstraint(SpringLayout.NORTH, labelcontactrdv, 10,
+		SpringLayout.SOUTH, heureRdv);
+	layout.putConstraint(SpringLayout.NORTH, contactrdv, 10,
+		SpringLayout.SOUTH, heureRdv);
+	layout.putConstraint(SpringLayout.WEST, contactrdv, 1,
+		SpringLayout.EAST, labelcontactrdv);
+
+	// Bouton valider
+	panel.add(bouttonValide);
+	layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, bouttonValide, 0,
+		SpringLayout.HORIZONTAL_CENTER, panel);
+	layout.putConstraint(SpringLayout.NORTH, bouttonValide, 10,
+		SpringLayout.SOUTH, labelcontactrdv);
+	
+	bouttonValide.addActionListener(new ValidateListener(this));
+	
+
+	this.setContentPane(panel);
+    }
+    
+    public Date getDate()
+    {
+	Date d = (Date) daterdv.getModel().getValue();
+	Date heure = (Date) heureRdv.getModel().getValue();
+	
+	d.setHours(heure.getHours());
+	d.setMinutes(heure.getMinutes());
+	
+	return d;
+    }
+    
+    public String getContact()
+    {
+	return contactrdv.getText();
+    }
+    
+    public String getLieu()
+    {
+	return lieurdv.getText();
     }
 }
