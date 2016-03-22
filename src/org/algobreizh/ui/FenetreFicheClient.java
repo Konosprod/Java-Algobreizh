@@ -56,7 +56,7 @@ public class FenetreFicheClient extends JDialog {
     labelEmailClient = new JLabel("Email : ");
     labelTelephoneClient = new JLabel("Téléphone : ");
     labelCodeClient = new JLabel("Code Client : ");
-    codeClient = new JLabel("000761");
+    codeClient = new JLabel("");
     labelParticularite = new JLabel("Particularite : ");
     labelDernierRDVClient = new JLabel("Dernier rendez-vous : ");
     labelProchainRDVClient = new JLabel("Prochain rendez-vous : ");

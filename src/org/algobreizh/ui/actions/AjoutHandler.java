@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.PreparedStatement;
 
 import org.algobreizh.ui.FenetreFicheClient;
 import org.algobreizh.ui.FenetrePrincipale;
@@ -49,16 +50,24 @@ public class AjoutHandler implements ActionListener {
 	    String sql = "insert into `client` (`dateRdv`, "
 	    + "`dateDernierRdv`, `idzoneGeo`, `nomClient`, `prenomClient`,"
 	    + " `particulariteClient`, `emailClient`, `numeroClient`)"
-	    + "values(0,0,9,'"+ nom +"','"+ prenom + "','"
-	    + particularite+ "','" + email +"','"+numero+"')";
+	    + "values(0,0,?,?,?,?,?,?)";
 	    
 	    try
 	    {
-		db.executeUpdate(sql);
+	    	PreparedStatement stmt = db.prepareStatement(sql);
+	    	
+	    	stmt.setString(1, parent.getCommercial().getIdZone());
+	    	stmt.setString(2, nom);
+	    	stmt.setString(3, prenom);
+	    	stmt.setString(4, particularite);
+	    	stmt.setString(5, email);
+	    	stmt.setString(6, numero);
+	    	
+	    	stmt.execute();
 	    }
 	    catch (Exception e)
 	    {
-		e.printStackTrace();
+	    	e.printStackTrace();
 	    }
 	    
 	}
