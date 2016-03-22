@@ -45,8 +45,10 @@ public class FenetreFicheClient extends JDialog {
 	
 	this.setTitle("Algobreizh - Fiche Client");
     this.setSize(500, 400);
+    
 	ImageIcon icon = new ImageIcon("ressources/icon.png");
 	this.setIconImage(icon.getImage());
+	this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
  
     // Création des JLabel
     labelNomClient = new JLabel("Nom : ");

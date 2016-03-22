@@ -22,10 +22,10 @@ public class AjoutHandler implements ActionListener {
 		
 		fenetreAjout.addWindowListener(new WindowAdapter() {
 		    @Override
-		    public void windowDeactivated(WindowEvent e)
+		    public void windowClosed(WindowEvent e)
 		    {
-			insertBdd();
-			refreshTabClient();
+		    	insertBdd();
+		    	refreshTabClient();
 		        super.windowDeactivated(e);
 		    }
 		});

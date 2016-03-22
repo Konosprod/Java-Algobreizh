@@ -1,5 +1,8 @@
 package org.algobreizh.ui;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.Properties;
 
@@ -14,6 +17,7 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SpringLayout;
 
 import org.algobreizh.ui.actions.ValidateListener;
+import org.algobreizh.utils.DatabaseManager;
 import org.algobreizh.utils.DateLabelFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -32,9 +36,11 @@ public class FenetreRdv extends JDialog {
     private static JButton bouttonValide;
     private static JDatePickerImpl daterdv;
     private static JSpinner heureRdv;
+    private boolean isEdited = false;
     
     public FenetreRdv()
     {
+    	setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 	// renomme la fenetre
 
 	this.setTitle("Algobreizh - Ajout rendez-vous");
@@ -129,22 +135,56 @@ public class FenetreRdv extends JDialog {
     
     public Date getDate()
     {
-	Date d = (Date) daterdv.getModel().getValue();
-	Date heure = (Date) heureRdv.getModel().getValue();
+    	Date d = (Date) daterdv.getModel().getValue();
+    	Date heure = (Date) heureRdv.getModel().getValue();
 	
-	d.setHours(heure.getHours());
-	d.setMinutes(heure.getMinutes());
+    	d.setHours(heure.getHours());
+    	d.setMinutes(heure.getMinutes());
 	
-	return d;
+    	return d;
     }
     
     public String getContact()
     {
-	return contactrdv.getText();
+    	return contactrdv.getText();
     }
     
     public String getLieu()
     {
-	return lieurdv.getText();
+    	return lieurdv.getText();
+    }
+    
+    public void chargerRdv(long index)
+    {
+    	DatabaseManager db = DatabaseManager.getInstance();
+    	
+    	String sql = "select * from client, rendezvous where client.idClient = ? and client.dateRdv = rendezvous.idRendezVous";
+    	
+    	try {
+			PreparedStatement stmt = db.prepareStatement(sql);
+			
+			stmt.setLong(1, index);
+			
+			ResultSet res = stmt.executeQuery();
+			res.next();
+			
+			contactrdv.setText(res.getString("contactRendezvous"));
+			lieurdv.setText(res.getString("lieuRendezvous"));
+			
+			isEdited = true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public boolean isEdited()
+    {
+    	return isEdited;
+    }
+    
+    public void setEdited(boolean isEdited)
+    {
+    	this.isEdited = isEdited;
     }
 }

@@ -23,7 +23,7 @@ public class EditHandler implements ActionListener {
 	
 		fenetreEdit.addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowDeactivated(WindowEvent e) {
+			public void windowClosed(WindowEvent e) {
 				insertBdd();
 				refreshTabClient();
 				super.windowDeactivated(e);

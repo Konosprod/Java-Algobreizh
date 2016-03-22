@@ -303,4 +303,12 @@ public class FenetrePrincipale extends JFrame {
 	{
 	    return commercial;
 	}
+	
+	public long getSelectedRdv()
+	{
+		if(!tabClient.getValueAt(tabClient.getSelectedRow(), 4).getClass().equals(String.class))
+			return getSelectedIndex();
+
+		return 0;
+	}
 }

@@ -99,6 +99,6 @@ public class DatabaseManager {
 	
 	public PreparedStatement prepareStatement(String sql) throws Exception
 	{
-		return connection.prepareStatement(sql);
+		return connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	}
 }

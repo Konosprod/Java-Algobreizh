@@ -39,16 +39,21 @@ public class RdvHandler implements ActionListener {
 		//fermeture de la fenetreRDV
 		fenetreRdv.addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowDeactivated(WindowEvent e) {
+			public void windowClosed(WindowEvent e) {
 				insertBdd();
 				refreshTabClient();
-				super.windowDeactivated(e);			
+				fenetreRdv.setEdited(false);
+				super.windowClosed(e);
 			}
 		});
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		if(fenetrePrincipale.getSelectedRdv() != 0)
+			fenetreRdv.chargerRdv(fenetrePrincipale.getSelectedIndex());
+		
 		fenetreRdv.setVisible(true);
 	}
 	
@@ -56,44 +61,14 @@ public class RdvHandler implements ActionListener {
 	 * Insert un RDV dans la base de donn�es
 	 */
 	private void insertBdd()
-	{
-	    DatabaseManager db = DatabaseManager.getInstance();
-	   
-	    Date date = fenetreRdv.getDate();
-	    String lieu = fenetreRdv.getLieu();
-	    String contact = fenetreRdv.getContact();
-	    int idCommercial = Integer.valueOf(fenetrePrincipale.getCommercial().getId());
-	    int idClient = fenetrePrincipale.getSelectedIndex();
-	    
-	    String sql = "insert into `rendezvous` (`idClient`, `contactRendezVous`, "
-	    + "`lieuRendezVous`, `idCommercial`, `dateRendezVous`)"
-	    + "values(?, ?, ?, ?, ?)";
-	    
-	    try
+	{   
+	    if(fenetreRdv.isEdited())
 	    {
-		PreparedStatement stmt = db.prepareStatement(sql);
-		
-		stmt.setInt(1, idClient);
-		stmt.setString(2, contact);
-		stmt.setString(3, lieu);
-		stmt.setInt(4, idCommercial);
-		stmt.setDate(5, new java.sql.Date(date.getTime()));
-		
-		stmt.executeUpdate();
-		
-		sql = "select dateRdv from client where idClient = " + String.valueOf(fenetrePrincipale.getSelectedIndex());
-
-		ResultSet res = db.execute(sql);
-		res.next();
-		
-		int dateRdv = res.getInt("dateRdv");
-			
-		sql = "update client set dateRdv =";
-		
+	    	insert();
 	    }
-	    catch (Exception e)
+	    else
 	    {
-		e.printStackTrace();
+	    	update();
 	    }
 	    
 	}
@@ -107,4 +82,79 @@ public class RdvHandler implements ActionListener {
 		fenetrePrincipale.refreshTab();
 	}
 	
+	
+	private void insert()
+	{
+		DatabaseManager db = DatabaseManager.getInstance();
+		
+		Date date = fenetreRdv.getDate();
+		String lieu = fenetreRdv.getLieu();
+		String contact = fenetreRdv.getContact();
+		int idCommercial = Integer.valueOf(fenetrePrincipale.getCommercial()
+				.getId());
+		int idClient = fenetrePrincipale.getSelectedIndex();
+
+		String sql = "insert into `rendezvous` (`idClient`, `contactRendezVous`, "
+				+ "`lieuRendezVous`, `idCommercial`, `dateRendezVous`)"
+				+ "values(?, ?, ?, ?, ?)";
+
+		try {
+			PreparedStatement stmt = db.prepareStatement(sql);
+
+			stmt.setInt(1, idClient);
+			stmt.setString(2, contact);
+			stmt.setString(3, lieu);
+			stmt.setInt(4, idCommercial);
+			stmt.setDate(5, new java.sql.Date(date.getTime()));
+
+			stmt.executeUpdate();
+
+			ResultSet ret = stmt.getGeneratedKeys();
+			ret.next();
+
+			long insertedRdv = ret.getLong(1);
+
+			sql = "select dateRdv from client where idClient = "
+					+ String.valueOf(fenetrePrincipale.getSelectedIndex());
+
+			ResultSet res = db.execute(sql);
+			res.next();
+
+			int dateRdv = res.getInt("dateRdv");
+
+			sql = "update client set dateRdv = ? , dateDernierRdv = ? where idClient = ?";
+
+			stmt = db.prepareStatement(sql);
+
+			stmt.setLong(1, insertedRdv);
+			stmt.setLong(2, dateRdv);
+			stmt.setLong(3, fenetrePrincipale.getSelectedIndex());
+
+			stmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void update()
+	{
+		DatabaseManager db = DatabaseManager.getInstance();
+		
+		String sql = "update rendezvous set contactRendezvous = ?, lieuRendezvous = ?, dateRendezvous where idRendezvous = ?";
+		
+		try {
+			PreparedStatement stmt = db.prepareStatement(sql);
+			
+			stmt.setString(1, fenetreRdv.getContact());
+			stmt.setString(2, fenetreRdv.getLieu());
+			stmt.setDate(3, new java.sql.Date(fenetreRdv.getDate().getTime()));
+			
+			stmt.execute();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+	}
 }
