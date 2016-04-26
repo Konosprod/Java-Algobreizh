@@ -36,7 +36,6 @@ public class FenetreRdv extends JDialog {
     private static JButton bouttonValide;
     private static JDatePickerImpl daterdv;
     private static JSpinner heureRdv;
-    private boolean isEdited = false;
     
     public FenetreRdv()
     {
@@ -171,20 +170,8 @@ public class FenetreRdv extends JDialog {
 			contactrdv.setText(res.getString("contactRendezvous"));
 			lieurdv.setText(res.getString("lieuRendezvous"));
 			
-			isEdited = true;
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    }
-    
-    public boolean isEdited()
-    {
-    	return isEdited;
-    }
-    
-    public void setEdited(boolean isEdited)
-    {
-    	this.isEdited = isEdited;
     }
 }

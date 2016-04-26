@@ -42,7 +42,6 @@ public class RdvHandler implements ActionListener {
 			public void windowClosed(WindowEvent e) {
 				insertBdd();
 				refreshTabClient();
-				fenetreRdv.setEdited(false);
 				super.windowClosed(e);
 			}
 		});
@@ -62,15 +61,7 @@ public class RdvHandler implements ActionListener {
 	 */
 	private void insertBdd()
 	{   
-	    if(fenetreRdv.isEdited())
-	    {
-	    	insert();
-	    }
-	    else
-	    {
-	    	update();
-	    }
-	    
+		insert();
 	}
 	
 	/**
@@ -140,8 +131,7 @@ public class RdvHandler implements ActionListener {
 	private void update()
 	{
 		DatabaseManager db = DatabaseManager.getInstance();
-		
-		String sql = "update rendezvous set contactRendezvous = ?, lieuRendezvous = ?, dateRendezvous where idRendezvous = ?";
+		String sql = "update rendezvous set contactRendezvous = ?, lieuRendezvous = ?, dateRendezvous = ? where idRendezvous = ?";
 		
 		try {
 			PreparedStatement stmt = db.prepareStatement(sql);
@@ -149,7 +139,9 @@ public class RdvHandler implements ActionListener {
 			stmt.setString(1, fenetreRdv.getContact());
 			stmt.setString(2, fenetreRdv.getLieu());
 			stmt.setDate(3, new java.sql.Date(fenetreRdv.getDate().getTime()));
+			stmt.setLong(4, fenetrePrincipale.getSelectedIndex());
 			
+			System.out.println(stmt);
 			stmt.execute();
 			
 		} catch (Exception e) {

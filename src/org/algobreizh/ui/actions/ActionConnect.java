@@ -2,6 +2,7 @@ package org.algobreizh.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.sql.ResultSet;
 
 import javax.swing.JFrame;
@@ -47,6 +48,7 @@ public class ActionConnect implements ActionListener {
 			
 			if (hash.getString("hash").equals(password))
 			{
+				updateRdv();
 				parent.setVisible(false);
 				nextFrame = new FenetrePrincipale(Integer.valueOf(idCommercial));
 				nextFrame.setLocationRelativeTo(parent);
@@ -56,6 +58,40 @@ public class ActionConnect implements ActionListener {
 		} catch (Exception e1) {
 			parent.afficherMsgErreur(true);
 			e1.printStackTrace();
+		}
+	}
+	
+	private void updateRdv()
+	{
+		String sql = "select * from client where dateRdv != 0";
+		
+		DatabaseManager db = DatabaseManager.getInstance();
+		
+		try {
+			ResultSet res = db.execute(sql);
+			
+			while(res.next())
+			{
+				long rdvId = res.getLong("dateRdv");
+				
+				sql = "select * from rendezvous where idRendezvous = '"+rdvId+"'";
+				
+				ResultSet res2 = db.execute(sql);
+				res2.next();
+				
+				Date date = res2.getDate("dateRendezvous");
+				
+				if(date.before(new Date(System.currentTimeMillis())))
+				{
+					long idClient = res.getLong("idClient");
+					sql = "update client set dateRdv = '0', dateDernierRdv='"+rdvId+"'where idClient = '"+idClient+"'";
+					db.executeUpdate(sql);
+				}
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
