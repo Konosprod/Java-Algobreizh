@@ -3,7 +3,6 @@ package org.algobreizh.ui;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;

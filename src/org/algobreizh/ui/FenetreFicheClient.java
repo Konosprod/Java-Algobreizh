@@ -2,8 +2,6 @@ package org.algobreizh.ui;
 
 
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
