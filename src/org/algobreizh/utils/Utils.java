@@ -10,7 +10,7 @@ import java.util.Date;
 public class Utils {
 	
 	/**
-	 * Calcul le hash SHA-256 d'une chaine de caractère
+	 * Calcul le hash SHA-256 d'une chaine de caractÃ¨re
 	 * @param s La chaine dont on veut calculer le hash
 	 * @return Le hash SHA-1 de la chaine {@code s}
 	 */
@@ -29,15 +29,18 @@ public class Utils {
 	
 	/**
 	 * Permet de faire la correspondance entre une valeur d'un byte et sa
-	 * représentation hexadécimale
+	 * reprÃ©sentation hexadÃ©cimale
 	 */
 	final protected static char[] hexArray = "0123456789abcdef".toCharArray();
 	
 	
 	/**
-	 * Permet de convertir un tableau de bytes en chaine de caractère
-	 * @param bytes Les bytes dont on veut la représentation en String
-	 * @return Une chaine de caractère représentant le {@code bytes}
+	 * Permet de convertir un tableau de bytes en chaine de caractÃ¨re
+	 * @param bytes Les bytes dont on veut la reprÃ©sentation en String
+	 * @return Une chaine de caractÃ¨re reprÃ©sentant le {@code bytes}
+	 *
+	 * Code found on StackOverflow
+	 * Link :https://stackoverflow.com/a/9855338
 	 */
 	public static String bytesToHex(byte[] bytes) {
 	    char[] hexChars = new char[bytes.length * 2];
